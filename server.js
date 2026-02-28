@@ -4,7 +4,7 @@ const path = require('path');
 
 const app = express();
 const PORT = 3000;
-const DATA_DIR = __dirname;
+const DATA_DIR = path.join(__dirname, 'data');
 const FILE_PREFIX = 'vulnerable-transitive-dep-';
 const FILE_SUFFIX = '.json';
 
