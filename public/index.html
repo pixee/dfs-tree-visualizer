@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DFS Vulnerability Dependency Tree</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>DFS Vulnerability Tree</h1>
+      <select id="repo-select">
+        <option value="">Loading...</option>
+      </select>
+    </div>
+    <div class="legend">
+      <span class="legend-item"><span class="dot root"></span>Root</span>
+      <span class="legend-item"><span class="dot direct"></span>Direct dep</span>
+      <span class="legend-item"><span class="dot transitive"></span>Transitive</span>
+      <span class="legend-item"><span class="dot vulnerable"></span>Vulnerable</span>
+    </div>
+  </header>
+
+  <main>
+    <aside id="sidebar">
+      <div class="sidebar-section">
+        <h3>Project</h3>
+        <p id="sb-project">--</p>
+      </div>
+      <div class="sidebar-section">
+        <h3>Ecosystem</h3>
+        <p id="sb-ecosystem">--</p>
+      </div>
+      <div class="sidebar-section">
+        <h3>Vulnerability</h3>
+        <p id="sb-vuln-id" class="vuln-id">--</p>
+        <p id="sb-vuln-severity" class="severity-badge">--</p>
+        <p id="sb-vuln-pkg">--</p>
+      </div>
+      <div class="sidebar-section">
+        <h3>Description</h3>
+        <p id="sb-vuln-desc" class="desc-text">--</p>
+      </div>
+      <div class="sidebar-section">
+        <h3>Chain Depth</h3>
+        <p id="sb-depth">--</p>
+      </div>
+      <div class="sidebar-section">
+        <h3>Total Paths</h3>
+        <p id="sb-paths">--</p>
+      </div>
+      <div class="sidebar-section" id="sb-additional-section" style="display:none">
+        <h3>Additional Vulns</h3>
+        <ul id="sb-additional"></ul>
+      </div>
+    </aside>
+
+    <div id="canvas-container"></div>
+  </main>
+
+  <div id="tooltip" class="tooltip"></div>
+
+  <script src="js/data-normalizer.js"></script>
+  <script src="js/tree-renderer.js"></script>
+  <script src="js/tooltip.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

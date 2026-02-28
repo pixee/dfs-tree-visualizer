@@ -1,0 +1,520 @@
+{
+  "project": {
+    "name": "mastodon",
+    "version": "0.0.0-use.local",
+    "ecosystem": "yarn",
+    "repository": "https://github.com/mastodon/mastodon.git",
+    "lockfile": "yarn.lock",
+    "workspaces": [".", "streaming"],
+    "package_manager": "yarn@4.12.0"
+  },
+  "vulnerable_transitive_dependency": {
+    "name": "tar",
+    "version": "7.4.3",
+    "purl": "pkg:npm/tar@7.4.3",
+    "vulnerability": {
+      "id": "CVE-2026-23745",
+      "description": "Arbitrary file overwrite vulnerability in tar. When extracting a crafted tar archive, an attacker can write files outside the intended extraction directory, potentially overwriting critical system or application files.",
+      "severity": "HIGH",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2026-23745",
+      "affected_versions": "<=7.4.3"
+    },
+    "additional_vulnerabilities": [
+      {
+        "id": "CVE-2026-23950",
+        "description": "Symlink poisoning vulnerability in tar. An attacker can craft a tar archive containing symlinks that, when extracted, allow file reads or writes outside the intended directory via symlink traversal.",
+        "severity": "HIGH",
+        "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2026-23950"
+      },
+      {
+        "id": "CVE-2026-24842",
+        "description": "Path traversal vulnerability in tar. Maliciously crafted tar entries with relative path components (../) can escape the extraction directory, enabling arbitrary file placement on the filesystem.",
+        "severity": "HIGH",
+        "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2026-24842"
+      },
+      {
+        "id": "CVE-2026-26960",
+        "description": "Additional file overwrite vector in tar via crafted archive entries that bypass path sanitization, allowing arbitrary file writes during extraction.",
+        "severity": "HIGH",
+        "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2026-26960"
+      }
+    ]
+  },
+  "dependency_chain": {
+    "description": "tar@7.4.3 is never declared directly in any package.json. It is embedded deep in the npm native-module build and caching toolchain, pulled in through node-gyp@11.4.2 (which depends on tar directly for extracting prebuilt headers, and also indirectly through make-fetch-happen -> cacache for its download cache). node-gyp is required by multiple native addon packages: @parcel/watcher (via sass), fsevents (via vite, rollup, playwright), bufferutil, utf-8-validate, and node-addon-api. The deepest path traverses 8 levels: typescript-plugin-css-modules -> sass -> @parcel/watcher -> node-addon-api -> node-gyp -> make-fetch-happen -> cacache -> tar.",
+    "deepest_path": [
+      "@mastodon/mastodon@0.0.0-use.local (root workspace)",
+      "typescript-plugin-css-modules@5.2.0 (devDependency, spec: ^5.2.0)",
+      "sass@1.97.3 (transitive, spec: ^1.70.0)",
+      "@parcel/watcher@2.5.0 (transitive, spec: ^2.4.1, optional)",
+      "node-addon-api@7.1.1 (transitive, spec: ^7.0.0)",
+      "node-gyp@11.4.2 (transitive, spec: latest)",
+      "make-fetch-happen@14.0.3 (transitive, spec: ^14.0.3)",
+      "cacache@19.0.1 (transitive, spec: ^19.0.1)",
+      "tar@7.4.3 (VULNERABLE, spec: ^7.4.3)"
+    ],
+    "total_upstream_paths": 22,
+    "all_paths": [
+      ["@mastodon/mastodon", "sass@1.97.3", "@parcel/watcher@2.5.0", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/mastodon", "sass@1.97.3", "@parcel/watcher@2.5.0", "node-addon-api@7.1.1", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/mastodon", "sass@1.97.3", "@parcel/watcher@2.5.0", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/mastodon", "sass@1.97.3", "@parcel/watcher@2.5.0", "node-addon-api@7.1.1", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/mastodon", "typescript-plugin-css-modules@5.2.0", "sass@1.97.3", "@parcel/watcher@2.5.0", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/mastodon", "typescript-plugin-css-modules@5.2.0", "sass@1.97.3", "@parcel/watcher@2.5.0", "node-addon-api@7.1.1", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/mastodon", "typescript-plugin-css-modules@5.2.0", "sass@1.97.3", "@parcel/watcher@2.5.0", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/mastodon", "typescript-plugin-css-modules@5.2.0", "sass@1.97.3", "@parcel/watcher@2.5.0", "node-addon-api@7.1.1", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/mastodon", "vite@7.3.1", "fsevents@2.3.3", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/mastodon", "vite@7.3.1", "fsevents@2.3.3", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/mastodon", "vite@7.3.1", "rollup@4.46.4", "fsevents@2.3.3", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/mastodon", "vite@7.3.1", "rollup@4.46.4", "fsevents@2.3.3", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/mastodon", "playwright@1.57.0", "fsevents@2.3.2", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/mastodon", "playwright@1.57.0", "fsevents@2.3.2", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/mastodon", "vite-plugin-pwa@1.2.0", "workbox-build@7.4.0", "rollup@2.79.2", "fsevents@2.3.3", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/mastodon", "vite-plugin-pwa@1.2.0", "workbox-build@7.4.0", "rollup@2.79.2", "fsevents@2.3.3", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/streaming", "bufferutil@4.1.0", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/streaming", "bufferutil@4.1.0", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/streaming", "utf-8-validate@6.0.6", "node-gyp@11.4.2", "tar@7.4.3"],
+      ["@mastodon/streaming", "utf-8-validate@6.0.6", "node-gyp@11.4.2", "make-fetch-happen@14.0.3", "cacache@19.0.1", "tar@7.4.3"],
+      ["@mastodon/mastodon", "storybook@10.1.10", "NOTE: storybook does not depend on tar, but is related via ws peer dep chain to bufferutil/utf-8-validate in streaming workspace"],
+      ["@mastodon/mastodon", "vite@7.3.1", "NOTE: vite itself is the hub; rollup@4.46.4 is its direct dep, and rollup has separate CVE-2026-27606"]
+    ],
+    "convergence_node": {
+      "name": "node-gyp",
+      "version": "11.4.2",
+      "description": "All 22 paths converge at node-gyp@11.4.2, the native addon build tool. node-gyp depends on tar directly (for extracting Node.js headers during native compilation) and indirectly via make-fetch-happen -> cacache (for HTTP caching of downloaded tarballs). This makes node-gyp the critical bottleneck: every native module in the project funnels through it to reach tar."
+    }
+  },
+  "sbom_locations": {
+    "sbom_file": null,
+    "sbom_format": "N/A (no SBOM generated; dependency data extracted from yarn.lock)",
+    "lockfile": "yarn.lock",
+    "occurrences": [
+      {
+        "location": "yarn.lock:13557-13569",
+        "type": "lockfile_resolution",
+        "content": {
+          "spec": "tar@^7.4.3",
+          "resolved_version": "7.4.3",
+          "dependencies": {
+            "@isaacs/fs-minipass": "^4.0.0",
+            "chownr": "^3.0.0",
+            "minipass": "^7.1.2",
+            "minizlib": "^3.0.1",
+            "mkdirp": "^3.0.1",
+            "yallist": "^5.0.0"
+          }
+        }
+      },
+      {
+        "location": "yarn.lock:10171-10189",
+        "type": "parent_lockfile_entry_node_gyp",
+        "description": "node-gyp@11.4.2 declares tar@^7.4.3 as a direct dependency",
+        "content": {
+          "spec": "node-gyp@latest",
+          "resolved_version": "11.4.2",
+          "selected_dependencies": {
+            "tar": "^7.4.3",
+            "make-fetch-happen": "^14.0.3",
+            "semver": "^7.3.5",
+            "nopt": "^8.0.0"
+          }
+        }
+      },
+      {
+        "location": "yarn.lock:5876-5894",
+        "type": "parent_lockfile_entry_cacache",
+        "description": "cacache@19.0.1 also declares tar@^7.4.3 as a direct dependency (reached via node-gyp -> make-fetch-happen -> cacache)",
+        "content": {
+          "spec": "cacache@^19.0.1",
+          "resolved_version": "19.0.1",
+          "selected_dependencies": {
+            "tar": "^7.4.3",
+            "ssri": "^12.0.0",
+            "minipass": "^7.0.3",
+            "p-map": "^7.0.2"
+          }
+        }
+      },
+      {
+        "location": "package.json:111",
+        "type": "root_dependency_declaration",
+        "description": "sass declared as a direct dependency of @mastodon/mastodon (one of the entry points to tar)",
+        "content": {
+          "sass": "^1.62.1"
+        }
+      },
+      {
+        "location": "package.json:120",
+        "type": "root_dependency_declaration",
+        "description": "vite declared as a direct dependency (another major entry point to tar via fsevents and rollup)",
+        "content": {
+          "vite": "^7.1.1"
+        }
+      },
+      {
+        "location": "package.json:192",
+        "type": "root_dev_dependency_declaration",
+        "description": "typescript-plugin-css-modules as devDependency (deepest chain entry point, goes through sass)",
+        "content": {
+          "typescript-plugin-css-modules": "^5.2.0"
+        }
+      },
+      {
+        "location": "streaming/package.json:45-46",
+        "type": "workspace_optional_dependency",
+        "description": "bufferutil and utf-8-validate declared as optionalDependencies in the streaming workspace (shortest path to tar at depth 3)",
+        "content": {
+          "bufferutil": "^4.0.7",
+          "utf-8-validate": "^6.0.3"
+        }
+      }
+    ]
+  },
+  "dfs_tree_context": {
+    "description": "DFS traversal levels along the deepest path from @mastodon/mastodon root to tar@7.4.3, traveling through typescript-plugin-css-modules -> sass -> @parcel/watcher -> node-addon-api -> node-gyp -> make-fetch-happen -> cacache -> tar. Sibling dependencies are captured at each level to provide full tree visualization context.",
+    "levels": [
+      {
+        "depth": 0,
+        "node": {
+          "name": "@mastodon/mastodon",
+          "version": "0.0.0-use.local",
+          "purl": "pkg:npm/%40mastodon/mastodon@0.0.0-use.local",
+          "type": "root"
+        },
+        "children_summary": {
+          "total_direct_dependencies": 87,
+          "total_dev_dependencies": 31,
+          "workspaces": [".", "streaming"],
+          "categories": {
+            "build_tooling": [
+              {"name": "vite", "spec": "^7.1.1", "note": "ALSO LEADS TO tar via rollup -> fsevents -> node-gyp"},
+              {"name": "vite-plugin-pwa", "spec": "^1.0.2", "note": "LEADS TO tar via workbox-build -> rollup -> fsevents"},
+              {"name": "vite-plugin-svgr", "spec": "^4.3.0"},
+              {"name": "vite-plugin-manifest-sri", "spec": "^0.2.0"},
+              {"name": "vite-tsconfig-paths", "spec": "^6.0.0"},
+              {"name": "cross-env", "spec": "^10.0.0"}
+            ],
+            "styling": [
+              {"name": "sass", "spec": "^1.62.1", "note": "LEADS TO tar via @parcel/watcher -> node-gyp"},
+              {"name": "postcss-preset-env", "spec": "^11.0.0"},
+              {"name": "stylelint", "spec": "^17.0.0"}
+            ],
+            "testing": [
+              {"name": "vitest", "spec": "^4.0.5"},
+              {"name": "playwright", "spec": "^1.57.0", "note": "LEADS TO tar via fsevents -> node-gyp"},
+              {"name": "storybook", "spec": "^10.0.5"}
+            ],
+            "typescript": [
+              {"name": "typescript", "spec": "~5.9.0"},
+              {"name": "typescript-plugin-css-modules", "spec": "^5.2.0", "note": "DEEPEST CHAIN ENTRY POINT to tar"}
+            ],
+            "react_framework": [
+              {"name": "react", "spec": "^18.2.0"},
+              {"name": "react-dom", "spec": "^18.2.0"},
+              {"name": "react-redux", "spec": "^9.0.4"},
+              {"name": "@reduxjs/toolkit", "spec": "^2.0.1"}
+            ]
+          }
+        }
+      },
+      {
+        "depth": 1,
+        "node": {
+          "name": "typescript-plugin-css-modules",
+          "version": "5.2.0",
+          "purl": "pkg:npm/typescript-plugin-css-modules@5.2.0",
+          "type": "direct_dev_dependency",
+          "declared_in": "package.json:192",
+          "spec_range": "^5.2.0",
+          "purpose": "TypeScript language service plugin that provides CSS module type information for .css/.scss imports, enabling IntelliSense for CSS class names in TypeScript/JSX files"
+        },
+        "siblings_at_this_level": {
+          "description": "Other direct dependencies of @mastodon/mastodon that also lead to tar (parallel entry points)",
+          "parallel_paths_to_tar": [
+            {"name": "sass", "version": "1.97.3", "shortest_hops_to_tar": 4, "note": "sass -> @parcel/watcher -> node-gyp -> tar"},
+            {"name": "vite", "version": "7.3.1", "shortest_hops_to_tar": 4, "note": "vite -> fsevents -> node-gyp -> tar"},
+            {"name": "vite-plugin-pwa", "version": "1.2.0", "shortest_hops_to_tar": 6, "note": "vite-plugin-pwa -> workbox-build -> rollup -> fsevents -> node-gyp -> tar"},
+            {"name": "playwright", "version": "1.57.0", "shortest_hops_to_tar": 4, "note": "playwright -> fsevents -> node-gyp -> tar"}
+          ],
+          "non_path_siblings": [
+            {"name": "eslint", "version": "9.39.2"},
+            {"name": "vitest", "version": "4.0.5"},
+            {"name": "@vitejs/plugin-react", "version": "5.0.0"},
+            {"name": "storybook", "version": "10.1.10"}
+          ]
+        },
+        "children": {
+          "total": 11,
+          "list": [
+            {"name": "@types/postcss-modules-local-by-default", "spec": "^4.0.2"},
+            {"name": "@types/postcss-modules-scope", "spec": "^3.0.4"},
+            {"name": "dotenv", "spec": "^16.4.2"},
+            {"name": "icss-utils", "spec": "^5.1.0"},
+            {"name": "less", "spec": "^4.2.0"},
+            {"name": "lodash.camelcase", "spec": "^4.3.0"},
+            {"name": "postcss", "spec": "^8.4.35"},
+            {"name": "postcss-load-config", "spec": "^3.1.4"},
+            {"name": "postcss-modules-extract-imports", "spec": "^3.0.0"},
+            {"name": "postcss-modules-local-by-default", "spec": "^4.0.4"},
+            {"name": "postcss-modules-scope", "spec": "^3.1.1"},
+            {"name": "reserved-words", "spec": "^0.1.2"},
+            {"name": "sass", "spec": "^1.70.0", "note": "CHAIN CONTINUES HERE"},
+            {"name": "source-map-js", "spec": "^1.0.2"},
+            {"name": "stylus", "spec": "^0.62.0", "optional": true},
+            {"name": "tsconfig-paths", "spec": "^4.2.0"}
+          ]
+        }
+      },
+      {
+        "depth": 2,
+        "node": {
+          "name": "sass",
+          "version": "1.97.3",
+          "purl": "pkg:npm/sass@1.97.3",
+          "type": "transitive_dependency",
+          "lockfile_location": "yarn.lock:12522-12536",
+          "spec_range": "^1.70.0 (from typescript-plugin-css-modules), ^1.62.1 (from @mastodon/mastodon direct)",
+          "purpose": "Dart Sass compiler - compiles SCSS/Sass stylesheets to CSS. Also reached directly from @mastodon/mastodon as a dependency (shorter parallel path)."
+        },
+        "siblings_at_this_level": {
+          "description": "Other children of typescript-plugin-css-modules at depth 2",
+          "notable_siblings": [
+            {"name": "less", "version": "4.4.2", "note": "Alternative CSS preprocessor, does NOT lead to tar"},
+            {"name": "postcss", "version": "8.5.6", "note": "CSS transformer, does NOT lead to tar"},
+            {"name": "dotenv", "version": "16.4.2"},
+            {"name": "icss-utils", "version": "5.1.0"}
+          ]
+        },
+        "children": {
+          "total": 4,
+          "list": [
+            {"name": "@parcel/watcher", "spec": "^2.4.1", "resolved": "2.5.0", "optional": true, "note": "CHAIN CONTINUES HERE"},
+            {"name": "chokidar", "spec": "^4.0.0", "resolved": "4.0.0"},
+            {"name": "immutable", "spec": "^5.0.2"},
+            {"name": "source-map-js", "spec": ">=0.6.2 <2.0.0"}
+          ]
+        }
+      },
+      {
+        "depth": 3,
+        "node": {
+          "name": "@parcel/watcher",
+          "version": "2.5.0",
+          "purl": "pkg:npm/%40parcel/watcher@2.5.0",
+          "type": "transitive_dependency",
+          "lockfile_location": "yarn.lock:3351-3374",
+          "spec_range": "^2.4.1",
+          "optional": true,
+          "purpose": "Native filesystem watcher used by Sass for efficient file watching during development. Contains platform-specific native addons that require node-gyp for compilation."
+        },
+        "siblings_at_this_level": {
+          "description": "Other children of sass at depth 3",
+          "notable_siblings": [
+            {"name": "chokidar", "version": "4.0.0", "note": "Cross-platform file watcher (pure JS fallback), does NOT lead to tar"},
+            {"name": "immutable", "version": "5.0.2", "note": "Immutable data structures for Sass internal use"},
+            {"name": "source-map-js", "note": "Source map support"}
+          ]
+        },
+        "children": {
+          "total": 17,
+          "list": [
+            {"name": "@parcel/watcher-android-arm64", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-darwin-arm64", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-darwin-x64", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-freebsd-x64", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-linux-arm-glibc", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-linux-arm-musl", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-linux-arm64-glibc", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-linux-arm64-musl", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-linux-x64-glibc", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-linux-x64-musl", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-win32-arm64", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-win32-ia32", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "@parcel/watcher-win32-x64", "spec": "2.5.0", "optional": true, "type": "platform-binary"},
+            {"name": "detect-libc", "spec": "^1.0.3"},
+            {"name": "is-glob", "spec": "^4.0.3"},
+            {"name": "micromatch", "spec": "^4.0.5"},
+            {"name": "node-addon-api", "spec": "^7.0.0", "resolved": "7.1.1", "note": "CHAIN CONTINUES HERE"},
+            {"name": "node-gyp", "spec": "latest", "resolved": "11.4.2", "note": "ALSO LEADS DIRECTLY TO tar (shorter parallel path)"}
+          ]
+        }
+      },
+      {
+        "depth": 4,
+        "node": {
+          "name": "node-addon-api",
+          "version": "7.1.1",
+          "purl": "pkg:npm/node-addon-api@7.1.1",
+          "type": "transitive_dependency",
+          "lockfile_location": "yarn.lock:10137-10144",
+          "spec_range": "^7.0.0",
+          "purpose": "C++ wrapper classes for Node.js N-API, providing a stable ABI for building native addons. Depends on node-gyp as its build tool."
+        },
+        "siblings_at_this_level": {
+          "description": "Other children of @parcel/watcher at depth 4 (excluding platform binaries)",
+          "notable_siblings": [
+            {"name": "node-gyp", "version": "11.4.2", "note": "DIRECT sibling also leads to tar (shorter path @parcel/watcher -> node-gyp -> tar)"},
+            {"name": "detect-libc", "version": "1.0.3", "note": "Detects C standard library variant"},
+            {"name": "is-glob", "version": "4.0.3"},
+            {"name": "micromatch", "version": "4.0.5", "note": "Glob pattern matching"}
+          ]
+        },
+        "children": {
+          "total": 1,
+          "list": [
+            {"name": "node-gyp", "spec": "latest", "resolved": "11.4.2", "note": "CHAIN CONTINUES HERE - sole dependency"}
+          ]
+        }
+      },
+      {
+        "depth": 5,
+        "node": {
+          "name": "node-gyp",
+          "version": "11.4.2",
+          "purl": "pkg:npm/node-gyp@11.4.2",
+          "type": "transitive_dependency",
+          "lockfile_location": "yarn.lock:10171-10189",
+          "spec_range": "latest",
+          "purpose": "Cross-platform native addon build tool for Node.js. Downloads and extracts Node.js header tarballs using tar, and caches downloads via make-fetch-happen/cacache. This is the CONVERGENCE NODE where all paths to tar@7.4.3 merge.",
+          "note": "CONVERGENCE NODE - reached from @parcel/watcher (2 ways), fsevents (via vite, rollup, playwright), bufferutil, utf-8-validate, and node-addon-api"
+        },
+        "siblings_at_this_level": {
+          "description": "node-addon-api has only one child (node-gyp), so no siblings exist under node-addon-api. However, node-gyp appears as a sibling of node-addon-api under @parcel/watcher at depth 4.",
+          "notable_note": "node-gyp is both a child of node-addon-api AND a direct child of @parcel/watcher, creating a diamond dependency pattern"
+        },
+        "children": {
+          "total": 9,
+          "list": [
+            {"name": "env-paths", "spec": "^2.2.0"},
+            {"name": "exponential-backoff", "spec": "^3.1.1"},
+            {"name": "graceful-fs", "spec": "^4.2.6"},
+            {"name": "make-fetch-happen", "spec": "^14.0.3", "resolved": "14.0.3", "note": "CHAIN CONTINUES HERE (indirect path to tar via cacache)"},
+            {"name": "nopt", "spec": "^8.0.0"},
+            {"name": "proc-log", "spec": "^5.0.0"},
+            {"name": "semver", "spec": "^7.3.5"},
+            {"name": "tar", "spec": "^7.4.3", "resolved": "7.4.3", "note": "VULNERABLE - ALSO REACHED DIRECTLY HERE (shorter path)"},
+            {"name": "tinyglobby", "spec": "^0.2.12"},
+            {"name": "which", "spec": "^5.0.0"}
+          ]
+        }
+      },
+      {
+        "depth": 6,
+        "node": {
+          "name": "make-fetch-happen",
+          "version": "14.0.3",
+          "purl": "pkg:npm/make-fetch-happen@14.0.3",
+          "type": "transitive_dependency",
+          "lockfile_location": "yarn.lock:9722-9739",
+          "spec_range": "^14.0.3",
+          "purpose": "HTTP client with caching, retry, and proxy support used by node-gyp to download Node.js headers and prebuilt binaries. Delegates caching to cacache."
+        },
+        "siblings_at_this_level": {
+          "description": "Other children of node-gyp at depth 6",
+          "notable_siblings": [
+            {"name": "tar", "version": "7.4.3", "note": "VULNERABLE - tar is a SIBLING of make-fetch-happen under node-gyp (direct dependency path ends here at depth 6)"},
+            {"name": "semver", "version": "7.3.5"},
+            {"name": "nopt", "note": "CLI option parser"},
+            {"name": "which", "note": "Unix which utility"},
+            {"name": "env-paths", "note": "OS-specific config paths"},
+            {"name": "tinyglobby", "note": "Fast glob matching"}
+          ]
+        },
+        "children": {
+          "total": 10,
+          "list": [
+            {"name": "@npmcli/agent", "spec": "^3.0.0"},
+            {"name": "cacache", "spec": "^19.0.1", "resolved": "19.0.1", "note": "CHAIN CONTINUES HERE"},
+            {"name": "http-cache-semantics", "spec": "^4.1.1"},
+            {"name": "minipass", "spec": "^7.0.2"},
+            {"name": "minipass-fetch", "spec": "^4.0.0"},
+            {"name": "minipass-flush", "spec": "^1.0.5"},
+            {"name": "minipass-pipeline", "spec": "^1.2.4"},
+            {"name": "negotiator", "spec": "^1.0.0"},
+            {"name": "proc-log", "spec": "^5.0.0"},
+            {"name": "promise-retry", "spec": "^2.0.1"},
+            {"name": "ssri", "spec": "^12.0.0"}
+          ]
+        }
+      },
+      {
+        "depth": 7,
+        "node": {
+          "name": "cacache",
+          "version": "19.0.1",
+          "purl": "pkg:npm/cacache@19.0.1",
+          "type": "transitive_dependency",
+          "lockfile_location": "yarn.lock:5876-5894",
+          "spec_range": "^19.0.1",
+          "purpose": "Content-addressable cache used by make-fetch-happen to store downloaded tarballs and HTTP responses. Uses tar to extract/pack cached archive contents."
+        },
+        "siblings_at_this_level": {
+          "description": "Other children of make-fetch-happen at depth 7",
+          "notable_siblings": [
+            {"name": "@npmcli/agent", "note": "HTTP/HTTPS/SOCKS agent management"},
+            {"name": "http-cache-semantics", "note": "RFC 7234 cache policy"},
+            {"name": "minipass", "note": "Streaming library used throughout npm toolchain"},
+            {"name": "minipass-fetch", "note": "fetch() implementation using minipass streams"},
+            {"name": "ssri", "note": "Subresource Integrity hash computation"},
+            {"name": "promise-retry", "note": "Retry logic for failed requests"}
+          ]
+        },
+        "children": {
+          "total": 11,
+          "list": [
+            {"name": "@npmcli/fs", "spec": "^4.0.0"},
+            {"name": "fs-minipass", "spec": "^3.0.0"},
+            {"name": "glob", "spec": "^10.2.2"},
+            {"name": "lru-cache", "spec": "^10.0.1"},
+            {"name": "minipass", "spec": "^7.0.3"},
+            {"name": "minipass-collect", "spec": "^2.0.1"},
+            {"name": "minipass-flush", "spec": "^1.0.5"},
+            {"name": "minipass-pipeline", "spec": "^1.2.4"},
+            {"name": "p-map", "spec": "^7.0.2"},
+            {"name": "ssri", "spec": "^12.0.0"},
+            {"name": "tar", "spec": "^7.4.3", "resolved": "7.4.3", "note": "VULNERABLE - TERMINAL NODE"},
+            {"name": "unique-filename", "spec": "^4.0.0"}
+          ]
+        }
+      },
+      {
+        "depth": 8,
+        "node": {
+          "name": "tar",
+          "version": "7.4.3",
+          "purl": "pkg:npm/tar@7.4.3",
+          "type": "transitive_dependency_VULNERABLE",
+          "lockfile_location": "yarn.lock:13557-13569",
+          "spec_range": "^7.4.3",
+          "vulnerabilities": [
+            "CVE-2026-23745 (arbitrary file overwrite)",
+            "CVE-2026-23950 (symlink poisoning)",
+            "CVE-2026-24842 (path traversal)",
+            "CVE-2026-26960 (file overwrite bypass)"
+          ]
+        },
+        "siblings_at_this_level": {
+          "description": "Other children of cacache at depth 8 (tar's siblings under cacache)",
+          "notable_siblings": [
+            {"name": "ssri", "version": "12.0.0", "note": "Integrity verification - ironically tar's sibling handles integrity but tar itself is vulnerable"},
+            {"name": "minipass", "note": "Stream infrastructure tar depends on"},
+            {"name": "unique-filename", "note": "Generates unique cache file paths"},
+            {"name": "p-map", "note": "Concurrent mapping utility"},
+            {"name": "glob", "note": "File globbing for cache management"}
+          ]
+        },
+        "children": {
+          "total": 6,
+          "list": [
+            {"name": "@isaacs/fs-minipass", "spec": "^4.0.0"},
+            {"name": "chownr", "spec": "^3.0.0"},
+            {"name": "minipass", "spec": "^7.1.2"},
+            {"name": "minizlib", "spec": "^3.0.1"},
+            {"name": "mkdirp", "spec": "^3.0.1"},
+            {"name": "yallist", "spec": "^5.0.0"}
+          ]
+        }
+      }
+    ]
+  }
+}

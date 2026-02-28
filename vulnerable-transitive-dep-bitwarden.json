@@ -1,0 +1,253 @@
+{
+  "project": {
+    "name": "bitwarden-server",
+    "version": "2026.2.0",
+    "ecosystem": "dotnet+npm",
+    "description": "Bitwarden Server is primarily a .NET project but includes npm sub-projects for email templating (mjml), admin portal, and SSO portal. The vulnerable dependency html-minifier exists only in the Mjml sub-project at src/Core/MailTemplates/Mjml/."
+  },
+  "vulnerable_transitive_dependency": {
+    "name": "html-minifier",
+    "version": "4.0.0",
+    "purl": "pkg:npm/html-minifier@4.0.0",
+    "registry_url": "https://registry.npmjs.org/html-minifier/-/html-minifier-4.0.0.tgz",
+    "vulnerability": {
+      "id": "CVE-2022-37620",
+      "description": "A Regular Expression Denial of Service (ReDoS) flaw was found in html-minifier up to 4.0.0 via the candidate variable in htmlminifier.js.",
+      "severity": "HIGH",
+      "cvss_score": 7.5,
+      "cwe": "CWE-1333",
+      "fixed_in_version": "No fix available; html-minifier is unmaintained. html-minifier-terser is the maintained fork.",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-37620"
+    },
+    "own_dependencies": {
+      "camel-case": "3.0.0",
+      "clean-css": "4.2.4",
+      "commander": "2.20.3",
+      "he": "1.2.0",
+      "param-case": "2.1.1",
+      "relateurl": "0.2.7",
+      "uglify-js": "3.19.3"
+    }
+  },
+  "dependency_chain": {
+    "description": "html-minifier:4.0.0 is a transitive dependency in the @bitwarden/mjml-emails sub-project (src/Core/MailTemplates/Mjml/). It is never declared directly in package.json. It is pulled in through mjml -> mjml-cli -> html-minifier AND through mjml-core -> html-minifier. mjml-core is both a direct dependency of the project AND a transitive dependency through mjml. The most complex chain is the 4-hop path through mjml -> mjml-cli -> html-minifier.",
+    "path": [
+      "@bitwarden/mjml-emails:1.0.0 (src/Core/MailTemplates/Mjml/package.json, direct dep on mjml)",
+      "mjml:4.15.3 (direct dependency declared in package.json)",
+      "mjml-cli:4.15.3 (transitive, pulled by mjml as one of 5 sub-packages)",
+      "html-minifier:4.0.0 (VULNERABLE - transitive, pulled by mjml-cli as one of 10 dependencies)"
+    ],
+    "total_upstream_paths": 3,
+    "all_paths": [
+      [
+        "@bitwarden/mjml-emails:1.0.0",
+        "mjml:4.15.3",
+        "mjml-cli:4.15.3",
+        "html-minifier:4.0.0"
+      ],
+      [
+        "@bitwarden/mjml-emails:1.0.0",
+        "mjml:4.15.3",
+        "mjml-core:4.15.3",
+        "html-minifier:4.0.0"
+      ],
+      [
+        "@bitwarden/mjml-emails:1.0.0",
+        "mjml-core:4.15.3 (also a direct dependency in package.json)",
+        "html-minifier:4.0.0"
+      ]
+    ]
+  },
+  "sbom_locations": {
+    "lockfile": "src/Core/MailTemplates/Mjml/package-lock.json",
+    "lockfile_version": 3,
+    "html_minifier_entry": {
+      "path_in_lockfile": "packages.node_modules/html-minifier",
+      "resolved": "https://registry.npmjs.org/html-minifier/-/html-minifier-4.0.0.tgz",
+      "integrity": "sha512-aoGxanpFPLg7MkIl/DDFYtb0iWz7jMFGqFhvEDZga6/4QTjneiD8I/NXL1x5aaoCp7FSIT6h/OhykDdPsbtMig=="
+    },
+    "parent_entries_referencing_html_minifier": [
+      {
+        "package": "mjml-cli:4.15.3",
+        "path_in_lockfile": "packages.node_modules/mjml-cli",
+        "dependency_spec": "^4.0.0"
+      },
+      {
+        "package": "mjml-core:4.15.3",
+        "path_in_lockfile": "packages.node_modules/mjml-core",
+        "dependency_spec": "^4.0.0"
+      }
+    ],
+    "not_present_in": [
+      "src/Admin/package-lock.json",
+      "bitwarden_license/src/Sso/package-lock.json"
+    ]
+  },
+  "dfs_tree_context": {
+    "description": "Full DFS traversal of the dependency tree from project root to html-minifier:4.0.0, showing siblings at each level for context. The most complex path (through mjml -> mjml-cli) is traced.",
+    "levels": [
+      {
+        "depth": 0,
+        "node": "@bitwarden/mjml-emails:1.0.0",
+        "role": "project_root",
+        "file": "src/Core/MailTemplates/Mjml/package.json",
+        "children_on_path": ["mjml:4.15.3"],
+        "all_children": {
+          "dependencies": ["mjml:4.15.3", "mjml-core:4.15.3"],
+          "devDependencies": ["nodemon:3.1.10", "prettier:3.6.2"]
+        },
+        "notes": "Both mjml and mjml-core are direct dependencies. mjml-core is also pulled transitively through mjml. Both lead to html-minifier."
+      },
+      {
+        "depth": 1,
+        "node": "mjml:4.15.3",
+        "role": "direct_dependency",
+        "version_spec_in_parent": "4.15.3",
+        "children_on_path": ["mjml-cli:4.15.3"],
+        "all_children": {
+          "@babel/runtime": "^7.23.9",
+          "mjml-cli": "4.15.3",
+          "mjml-core": "4.15.3",
+          "mjml-migrate": "4.15.3",
+          "mjml-preset-core": "4.15.3",
+          "mjml-validator": "4.15.3"
+        },
+        "sibling_context": {
+          "mjml-core": {
+            "version": "4.15.3",
+            "note": "ALSO depends on html-minifier:^4.0.0 (alternative path to the vulnerable dep)"
+          },
+          "mjml-cli": {
+            "version": "4.15.3",
+            "note": "ON PATH - depends on html-minifier:^4.0.0"
+          },
+          "mjml-preset-core": {
+            "version": "4.15.3",
+            "note": "Aggregates 20+ mjml-* component packages (accordion, body, button, carousel, column, divider, group, head, hero, image, navbar, raw, section, social, spacer, table, text, wrapper, etc.)"
+          },
+          "mjml-migrate": {
+            "version": "4.15.3",
+            "note": "Schema migration tool, depends on mjml-core (which in turn pulls html-minifier)"
+          },
+          "mjml-validator": {
+            "version": "4.15.3",
+            "note": "Validation utility, only depends on @babel/runtime"
+          }
+        }
+      },
+      {
+        "depth": 2,
+        "node": "mjml-cli:4.15.3",
+        "role": "transitive_dependency",
+        "version_spec_in_parent": "4.15.3",
+        "children_on_path": ["html-minifier:4.0.0"],
+        "all_children": {
+          "@babel/runtime": "^7.23.9",
+          "chokidar": "^3.0.0",
+          "glob": "^10.3.10",
+          "html-minifier": "^4.0.0",
+          "js-beautify": "^1.6.14",
+          "lodash": "^4.17.21",
+          "minimatch": "^9.0.3",
+          "mjml-core": "4.15.3",
+          "mjml-migrate": "4.15.3",
+          "mjml-parser-xml": "4.15.3",
+          "mjml-validator": "4.15.3",
+          "yargs": "^17.7.2"
+        },
+        "sibling_context": {
+          "html-minifier": {
+            "version": "4.0.0",
+            "resolved_spec": "^4.0.0",
+            "note": "VULNERABLE - CVE-2022-37620 (ReDoS). This is the target."
+          },
+          "chokidar": {
+            "version": "3.6.0",
+            "note": "File watcher for --watch mode in mjml-cli"
+          },
+          "glob": {
+            "version": "10.4.5",
+            "note": "File globbing, depends on minimatch:^9.0.4, foreground-child, jackspeak, minipass, package-json-from-dist, path-scurry"
+          },
+          "minimatch": {
+            "version": "9.0.5",
+            "note": "Glob pattern matching, depends on brace-expansion:^2.0.1"
+          },
+          "js-beautify": {
+            "version": "1.15.4",
+            "note": "Code formatter for output, depends on config-chain, editorconfig, glob, js-cookie, nopt"
+          },
+          "lodash": {
+            "version": "4.17.21",
+            "note": "Utility library, no sub-dependencies"
+          },
+          "mjml-core": {
+            "version": "4.15.3",
+            "note": "Core rendering engine (also depends on html-minifier independently)"
+          },
+          "yargs": {
+            "version": "17.7.2",
+            "note": "CLI argument parser, depends on cliui, escalade, get-caller-file, require-directory, string-width, y18n, yargs-parser"
+          }
+        },
+        "notes": "mjml-cli is the CLI runner for mjml. It has 12 dependencies, including html-minifier for output minification, glob/minimatch for file matching, chokidar for watch mode, and yargs for argument parsing."
+      },
+      {
+        "depth": 3,
+        "node": "html-minifier:4.0.0",
+        "role": "vulnerable_transitive_dependency",
+        "version_spec_in_parent": "^4.0.0",
+        "resolved_version": "4.0.0",
+        "vulnerability": "CVE-2022-37620 (HIGH, ReDoS)",
+        "children_on_path": [],
+        "all_children": {
+          "camel-case": "^3.0.0",
+          "clean-css": "^4.2.1",
+          "commander": "^2.19.0",
+          "he": "^1.2.0",
+          "param-case": "^2.1.1",
+          "relateurl": "^0.2.7",
+          "uglify-js": "^3.5.1"
+        },
+        "resolved_children": {
+          "camel-case": {
+            "version": "3.0.0",
+            "dependencies": {"no-case": "^2.2.0", "upper-case": "^1.1.1"},
+            "note": "String utility, converts to camelCase. no-case:2.3.2 depends on lower-case:1.1.4."
+          },
+          "clean-css": {
+            "version": "4.2.4",
+            "dependencies": {"source-map": "~0.6.0"},
+            "note": "CSS optimizer/minifier. source-map:0.6.1 is a leaf."
+          },
+          "commander": {
+            "version": "2.20.3",
+            "dependencies": {},
+            "note": "CLI option parser, leaf node."
+          },
+          "he": {
+            "version": "1.2.0",
+            "dependencies": {},
+            "note": "HTML entity encoder/decoder, leaf node."
+          },
+          "param-case": {
+            "version": "2.1.1",
+            "dependencies": {"no-case": "^2.2.0"},
+            "note": "String utility for param-case conversion. Shares no-case:2.3.2 with camel-case."
+          },
+          "relateurl": {
+            "version": "0.2.7",
+            "dependencies": {},
+            "note": "URL minifier, leaf node."
+          },
+          "uglify-js": {
+            "version": "3.19.3",
+            "dependencies": {},
+            "note": "JavaScript compressor/minifier, leaf node."
+          }
+        },
+        "notes": "html-minifier:4.0.0 is the last published version (2019). The project is unmaintained. The maintained fork is html-minifier-terser. The ReDoS vulnerability is in the candidate variable regex in htmlminifier.js. html-minifier has 7 direct dependencies forming a subtree of ~11 packages total."
+      }
+    ]
+  }
+}

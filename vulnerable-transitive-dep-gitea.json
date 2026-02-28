@@ -1,0 +1,206 @@
+{
+  "project": {
+    "name": "gitea",
+    "version": "development (go.mod: go 1.26.0)",
+    "ecosystem": "go",
+    "module_path": "code.gitea.io/gitea"
+  },
+  "vulnerable_transitive_dependency": {
+    "name": "github.com/dgrijalva/jwt-go",
+    "version": "v3.2.0+incompatible",
+    "purl": "pkg:golang/github.com/dgrijalva/jwt-go@v3.2.0+incompatible",
+    "vulnerability": {
+      "id": "CVE-2020-26160",
+      "description": "jwt-go allows access restriction bypass because m[\"aud\"] mishandling in token validation. The library does not properly validate the audience claim in JWT tokens, potentially allowing tokens intended for one service to be accepted by another.",
+      "severity": "HIGH",
+      "cvss_score": 7.5,
+      "fixed_in_version": "v4.0.0-preview1 (fork: github.com/golang-jwt/jwt)",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2020-26160",
+      "note": "The dgrijalva/jwt-go library is deprecated and unmaintained. The community fork golang-jwt/jwt is the official replacement."
+    }
+  },
+  "dependency_chain": {
+    "description": "UNUSUAL CASE: github.com/dgrijalva/jwt-go v3.2.0+incompatible is declared as a DIRECT dependency in go.mod (line 40, first require block, no '// indirect' comment). However, it is NOT present in go.sum and NO Go source files (.go) import it. The project exclusively uses the modern replacement github.com/golang-jwt/jwt/v5 v5.3.1 (imported in 10 source files). This is a phantom/orphan dependency -- likely a leftover from before the migration to golang-jwt/jwt that was never cleaned from go.mod. Go 1.17+ module graph pruning means it does not get downloaded or affect the build, but it remains declared.",
+    "path": [
+      "code.gitea.io/gitea (root module)",
+      "github.com/dgrijalva/jwt-go@v3.2.0+incompatible (DIRECT dep in go.mod line 40 - VULNERABLE)"
+    ],
+    "total_upstream_paths": 1,
+    "all_paths": [
+      [
+        "code.gitea.io/gitea",
+        "github.com/dgrijalva/jwt-go@v3.2.0+incompatible"
+      ]
+    ],
+    "chain_depth": 1,
+    "is_transitive": false,
+    "is_phantom_dependency": true,
+    "phantom_evidence": {
+      "in_go_mod": true,
+      "in_go_sum": false,
+      "imported_in_source": false,
+      "go_source_files_importing": [],
+      "replacement_in_use": {
+        "module": "github.com/golang-jwt/jwt/v5",
+        "version": "v5.3.1",
+        "source_files_importing": [
+          "services/packages/auth.go",
+          "services/oauth2_provider/access_token.go",
+          "services/oauth2_provider/jwtsigningkey.go",
+          "services/oauth2_provider/token.go",
+          "services/lfs/server.go",
+          "services/actions/auth_test.go",
+          "services/actions/auth.go",
+          "routers/web/auth/oauth_test.go",
+          "routers/web/auth/oauth2_provider.go",
+          "modules/generate/generate.go"
+        ]
+      }
+    }
+  },
+  "additional_dependency_chains": {
+    "filippo_edwards25519": {
+      "name": "filippo.io/edwards25519",
+      "version": "v1.1.0",
+      "status": "indirect dependency",
+      "chain": [
+        "code.gitea.io/gitea (root)",
+        "github.com/go-sql-driver/mysql@v1.9.3 (direct dep, go.mod line 61)",
+        "filippo.io/edwards25519@v1.1.0 (indirect, go.mod line 139)"
+      ],
+      "note": "edwards25519 is a well-known transitive dependency of go-sql-driver/mysql for Ed25519 authentication support. It may also be pulled by github.com/microsoft/go-mssqldb@v1.9.6.",
+      "in_go_sum": true
+    },
+    "go_git": {
+      "name": "github.com/go-git/go-git/v5",
+      "version": "v5.16.4",
+      "status": "direct dependency",
+      "source_files_count": 22,
+      "transitive_deps_pulled_in": [
+        "github.com/ProtonMail/go-crypto@v1.3.0",
+        "github.com/cloudflare/circl@v1.6.1",
+        "github.com/go-git/go-billy/v5@v5.7.0",
+        "github.com/go-git/gcfg@v1.5.1-0.20230307220236-3a3c6141e376",
+        "github.com/cyphar/filepath-securejoin@v0.4.1",
+        "github.com/pjbgf/sha1cd@v0.4.0",
+        "github.com/skeema/knownhosts@v1.3.1",
+        "github.com/kevinburke/ssh_config@v1.4.0",
+        "github.com/xanzy/ssh-agent@v0.3.3",
+        "github.com/jbenet/go-context@v0.0.0-20150711004518-d14ea06fba99",
+        "github.com/sergi/go-diff@v1.4.0",
+        "github.com/emirpasic/gods@v1.18.1",
+        "dario.cat/mergo@v1.0.2",
+        "github.com/Microsoft/go-winio@v0.6.2",
+        "github.com/sirupsen/logrus@v1.9.3"
+      ]
+    }
+  },
+  "sbom_locations": {
+    "sbom_file": "not generated (Go project - use 'syft' or 'cyclonedx-gomod' to generate)",
+    "go_mod_location": "go.mod line 40",
+    "go_sum_location": "ABSENT - not present in go.sum",
+    "note": "The dependency is declared in go.mod but pruned by Go 1.17+ module graph pruning since no package from this module is imported. A CycloneDX or SPDX SBOM generated from the compiled binary would NOT include this module. However, an SBOM generated from go.mod parsing alone would include it."
+  },
+  "dfs_tree_context": {
+    "description": "DFS tree levels showing the dependency hierarchy. jwt-go is unique because it is a depth-1 (direct) phantom dependency, not a true transitive chain.",
+    "levels": [
+      {
+        "level": 0,
+        "module": "code.gitea.io/gitea",
+        "type": "root",
+        "direct_dependency_count": 123,
+        "indirect_dependency_count": 158,
+        "notable_direct_siblings_of_jwt_go": [
+          "github.com/golang-jwt/jwt/v5@v5.3.1 (the modern replacement, actively used)",
+          "github.com/markbates/goth@v1.82.0 (OAuth provider, historically required jwt-go)",
+          "github.com/go-git/go-git/v5@v5.16.4 (Git operations)",
+          "github.com/go-sql-driver/mysql@v1.9.3 (MySQL driver)",
+          "github.com/microsoft/go-mssqldb@v1.9.6 (MSSQL driver)",
+          "github.com/go-webauthn/webauthn@v0.13.4 (WebAuthn support)",
+          "github.com/olivere/elastic/v7@v7.0.32 (Elasticsearch client)",
+          "github.com/blevesearch/bleve/v2@v2.5.7 (full-text search)",
+          "github.com/minio/minio-go/v7@v7.0.98 (S3-compatible storage)",
+          "github.com/prometheus/client_golang@v1.23.2 (metrics)"
+        ]
+      },
+      {
+        "level": 1,
+        "module": "github.com/dgrijalva/jwt-go@v3.2.0+incompatible",
+        "type": "leaf (VULNERABLE, phantom - not in go.sum, not imported)",
+        "vulnerability": "CVE-2020-26160",
+        "children": [],
+        "note": "This module has no transitive children because it is never actually resolved/downloaded due to Go module pruning."
+      }
+    ],
+    "comparison_with_edwards25519_chain": {
+      "description": "For contrast, here is the edwards25519 chain which IS a true transitive dependency actually present in the build",
+      "levels": [
+        {
+          "level": 0,
+          "module": "code.gitea.io/gitea",
+          "type": "root"
+        },
+        {
+          "level": 1,
+          "module": "github.com/go-sql-driver/mysql@v1.9.3",
+          "type": "direct dependency",
+          "siblings_at_this_level": [
+            "github.com/microsoft/go-mssqldb@v1.9.6 (also may pull edwards25519)"
+          ]
+        },
+        {
+          "level": 2,
+          "module": "filippo.io/edwards25519@v1.1.0",
+          "type": "indirect/transitive dependency (in go.sum, actually downloaded)"
+        }
+      ]
+    },
+    "comparison_with_go_git_chain": {
+      "description": "go-git has the deepest and most complex transitive chain in this project",
+      "levels": [
+        {
+          "level": 0,
+          "module": "code.gitea.io/gitea",
+          "type": "root"
+        },
+        {
+          "level": 1,
+          "module": "github.com/go-git/go-git/v5@v5.16.4",
+          "type": "direct dependency (22+ source files import it)"
+        },
+        {
+          "level": 2,
+          "modules": [
+            "github.com/ProtonMail/go-crypto@v1.3.0",
+            "github.com/go-git/go-billy/v5@v5.7.0",
+            "github.com/go-git/gcfg@v1.5.1",
+            "github.com/cyphar/filepath-securejoin@v0.4.1",
+            "github.com/pjbgf/sha1cd@v0.4.0",
+            "github.com/skeema/knownhosts@v1.3.1",
+            "github.com/kevinburke/ssh_config@v1.4.0",
+            "github.com/xanzy/ssh-agent@v0.3.3",
+            "github.com/sergi/go-diff@v1.4.0",
+            "github.com/emirpasic/gods@v1.18.1",
+            "dario.cat/mergo@v1.0.2"
+          ],
+          "type": "indirect dependencies of go-git"
+        },
+        {
+          "level": 3,
+          "modules": [
+            "github.com/cloudflare/circl@v1.6.1 (via ProtonMail/go-crypto)",
+            "github.com/Microsoft/go-winio@v0.6.2 (via xanzy/ssh-agent)",
+            "github.com/sirupsen/logrus@v1.9.3 (via go-git internals)"
+          ],
+          "type": "deeper transitive dependencies"
+        }
+      ]
+    }
+  },
+  "remediation": {
+    "recommendation": "Remove github.com/dgrijalva/jwt-go from go.mod. It is a phantom dependency: declared but never imported or downloaded. The project already uses the secure replacement github.com/golang-jwt/jwt/v5@v5.3.1.",
+    "command": "Run 'go mod tidy' to automatically remove the unused dependency from go.mod",
+    "risk": "None - no code imports this module",
+    "historical_context": "jwt-go was likely required by an older version of github.com/markbates/goth or another OAuth library. The goth library (v1.82.0) has since migrated to golang-jwt/jwt. The orphan entry in go.mod was never cleaned up."
+  }
+}

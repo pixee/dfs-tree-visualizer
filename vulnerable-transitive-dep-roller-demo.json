@@ -1,0 +1,51 @@
+{
+  "vulnerable_transitive_dependency": {
+    "group": "commons-fileupload",
+    "artifact": "commons-fileupload",
+    "version": "1.4",
+    "purl": "pkg:maven/commons-fileupload/commons-fileupload@1.4?type=jar",
+    "vulnerability": {
+      "id": "CVE-2023-24998",
+      "description": "Apache Commons FileUpload before 1.5 does not limit the number of request parts, allowing an attacker to trigger a denial of service with a malicious upload or series of uploads (request level DoS).",
+      "severity": "HIGH",
+      "cvss_score": 7.5,
+      "fixed_in_version": "1.5"
+    }
+  },
+  "dependency_chain": {
+    "description": "commons-fileupload:1.4 is a transitive dependency, not declared directly in any pom.xml. It is pulled in through struts2-core.",
+    "path": [
+      "org.apache.roller:roller-webapp:6.1.4 (app/pom.xml, direct dependency on struts2-core)",
+      "org.apache.struts:struts2-core:2.5.29 (direct dep in app/pom.xml:209-218)",
+      "commons-fileupload:commons-fileupload:1.4 (transitive, pulled by struts2-core)"
+    ]
+  },
+  "sbom_location": {
+    "sbom_file": "target/sbom.json",
+    "sbom_format": "CycloneDX",
+    "sbom_spec_version": "1.5",
+    "component_entry": {
+      "publisher": "The Apache Software Foundation",
+      "group": "commons-fileupload",
+      "name": "commons-fileupload",
+      "version": "1.4",
+      "purl": "pkg:maven/commons-fileupload/commons-fileupload@1.4?type=jar",
+      "type": "library",
+      "bom-ref": "pkg:maven/commons-fileupload/commons-fileupload@1.4?type=jar"
+    },
+    "dependency_graph_entries": [
+      {
+        "note": "struts2-core declares commons-fileupload as a dependency",
+        "parent": "pkg:maven/org.apache.struts/struts2-core@2.5.29?type=jar",
+        "child": "pkg:maven/commons-fileupload/commons-fileupload@1.4?type=jar"
+      },
+      {
+        "note": "commons-fileupload itself depends on commons-io",
+        "ref": "pkg:maven/commons-fileupload/commons-fileupload@1.4?type=jar",
+        "dependsOn": [
+          "pkg:maven/commons-io/commons-io@2.6?type=jar"
+        ]
+      }
+    ]
+  }
+}

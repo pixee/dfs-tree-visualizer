@@ -1,0 +1,153 @@
+{
+  "project": {
+    "name": "juice-shop",
+    "version": "16.0.1",
+    "framework": "Express.js (Node.js)",
+    "description": "OWASP Juice Shop - intentionally vulnerable web application"
+  },
+  "vulnerable_transitive_dependency": {
+    "name": "http-cache-semantics",
+    "version": "4.0.0",
+    "purl": "pkg:npm/http-cache-semantics@4.0.0",
+    "vulnerability": {
+      "id": "CVE-2022-25881",
+      "description": "http-cache-semantics before 4.1.1 is vulnerable to Regular Expression Denial of Service (ReDoS) via the Cache-Control header parsing. An attacker can cause a long computation time by crafting a malicious Cache-Control header value.",
+      "severity": "HIGH",
+      "cvss_score": 7.5,
+      "fixed_in_version": "4.1.1",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25881"
+    }
+  },
+  "dependency_chain": {
+    "description": "http-cache-semantics is a deeply nested transitive dependency, never declared directly in package.json. It is pulled in 4 levels deep through the download package (used for fetching training data for the chatbot feature), which depends on got for HTTP requests, which uses cacheable-request for caching, which relies on http-cache-semantics for HTTP caching logic. The vulnerable package is invisible to developers inspecting only the top-level package.json.",
+    "direct_path": [
+      "juice-shop@16.0.1",
+      "download@8.0.0 (declared in package.json as ^8.0.0)",
+      "got@9.6.0 (transitive, HTTP client used by download)",
+      "cacheable-request@6.1.0 (transitive, HTTP caching layer for got)",
+      "http-cache-semantics@4.0.0 (VULNERABLE - ReDoS via Cache-Control header)"
+    ],
+    "depth": 4,
+    "total_upstream_paths": 3,
+    "alternate_paths": [
+      {
+        "description": "Primary path through download -> got -> cacheable-request",
+        "path": [
+          "juice-shop@16.0.1",
+          "download@8.0.0",
+          "got@9.6.0",
+          "cacheable-request@6.1.0",
+          "http-cache-semantics@4.0.0"
+        ]
+      },
+      {
+        "description": "download is also depended on indirectly through node-pre-gyp which uses request (deprecated) and needle, but the primary route to http-cache-semantics is through got",
+        "note": "node-pre-gyp@0.15.0 uses its own HTTP stack, not got, so it does not duplicate this exact path"
+      }
+    ],
+    "why_this_is_complex": "This chain is 4 levels deep with no package in the transitive path appearing in the project's package.json. Each intermediate package serves a distinct abstraction layer: download (file fetching), got (HTTP client), cacheable-request (caching strategy), http-cache-semantics (cache header parsing). A developer would need to trace through 4 separate packages' package.json files to discover this vulnerability."
+  },
+  "other_notable_vulnerable_transitive_deps": [
+    {
+      "name": "tough-cookie",
+      "version": "2.5.0",
+      "vulnerability_id": "CVE-2023-26136",
+      "severity": "CRITICAL",
+      "chain": "juice-shop -> request@2.88.2 -> tough-cookie@2.5.0",
+      "depth": 2
+    },
+    {
+      "name": "bl",
+      "version": "1.2.3",
+      "vulnerability_id": "CVE-2020-8244",
+      "severity": "MEDIUM",
+      "chain": "juice-shop -> download@8.0.0 -> decompress@4.2.1 -> decompress-tar@4.1.1 -> tar-stream@1.6.2 -> bl@1.2.3",
+      "depth": 5
+    },
+    {
+      "name": "json-buffer",
+      "version": "3.0.0",
+      "vulnerability_id": "CVE-2020-7660",
+      "severity": "MEDIUM",
+      "chain": "juice-shop -> download@8.0.0 -> got@9.6.0 -> cacheable-request@6.1.0 -> keyv@3.1.0 -> json-buffer@3.0.0",
+      "depth": 5
+    }
+  ],
+  "sbom_locations": {
+    "sbom_file": "bom.json (generated via npm run sbom:json using @cyclonedx/cyclonedx-npm)",
+    "sbom_format": "CycloneDX",
+    "note": "No lockfile or SBOM currently exists in the repository. A package-lock.json must be generated first via 'npm install --package-lock-only', then 'npm run sbom:json' will produce bom.json.",
+    "expected_occurrences": [
+      {
+        "location": "components[N]",
+        "type": "component_entry",
+        "content": {
+          "name": "http-cache-semantics",
+          "version": "4.0.0",
+          "purl": "pkg:npm/http-cache-semantics@4.0.0",
+          "type": "library"
+        }
+      },
+      {
+        "location": "dependencies[M].ref",
+        "type": "dependency_graph_node",
+        "description": "http-cache-semantics entry in the dependency graph (leaf node with no children of its own)",
+        "content": {
+          "ref": "pkg:npm/http-cache-semantics@4.0.0",
+          "dependsOn": []
+        }
+      },
+      {
+        "location": "dependencies[K].dependsOn",
+        "type": "dependency_graph_edge",
+        "description": "http-cache-semantics listed as a dependency of cacheable-request",
+        "parent": "pkg:npm/cacheable-request@6.1.0",
+        "child": "pkg:npm/http-cache-semantics@4.0.0"
+      }
+    ]
+  },
+  "dfs_tree_context": {
+    "description": "In a DFS traversal of the npm dependency tree starting from juice-shop@16.0.1, the vulnerable http-cache-semantics package is discovered deep in the download subtree. The traversal must explore juice-shop -> download -> got -> cacheable-request before reaching http-cache-semantics at depth 4.",
+    "traversal_order_snippet": [
+      "VISIT juice-shop@16.0.1 (root, depth=0)",
+      "  VISIT body-parser@1.20.2 (depth=1) ...",
+      "  BACKTRACK to juice-shop",
+      "  ...",
+      "  VISIT download@8.0.0 (depth=1)",
+      "    VISIT caw@2.0.1 (depth=2) ...",
+      "    BACKTRACK to download",
+      "    VISIT decompress@4.2.1 (depth=2)",
+      "      VISIT decompress-tar@4.1.1 (depth=3)",
+      "        VISIT tar-stream@1.6.2 (depth=4)",
+      "          VISIT bl@1.2.3 (depth=5, VULNERABLE - CVE-2020-8244)",
+      "          BACKTRACK to tar-stream",
+      "        BACKTRACK to decompress-tar",
+      "      BACKTRACK to decompress",
+      "    BACKTRACK to download",
+      "    VISIT got@9.6.0 (depth=2)",
+      "      VISIT cacheable-request@6.1.0 (depth=3)",
+      "        VISIT http-cache-semantics@4.0.0 (depth=4, VULNERABLE - CVE-2022-25881)",
+      "        BACKTRACK to cacheable-request",
+      "        VISIT keyv@3.1.0 (depth=4)",
+      "          VISIT json-buffer@3.0.0 (depth=5, VULNERABLE - CVE-2020-7660)",
+      "          BACKTRACK to keyv",
+      "        BACKTRACK to cacheable-request",
+      "      BACKTRACK to got",
+      "    BACKTRACK to download",
+      "  BACKTRACK to juice-shop",
+      "  ..."
+    ],
+    "dfs_properties": {
+      "total_nodes_before_reaching_target": "~50-80 (estimated, depends on alphabetical ordering of siblings)",
+      "target_depth": 4,
+      "max_tree_depth_estimate": "8-12 (the full npm dependency tree for Juice Shop is extremely deep)",
+      "branching_factor_at_each_level": {
+        "juice-shop (root)": "~70 direct dependencies",
+        "download": "~6 direct dependencies (caw, content-disposition, decompress, ext-name, got, p-event)",
+        "got": "~12 direct dependencies (cacheable-request, decompress-response, duplexer3, get-stream, lowercase-keys, mimic-response, p-cancelable, to-readable-stream, url-parse-lax)",
+        "cacheable-request": "~6 direct dependencies (clone-response, get-stream, http-cache-semantics, keyv, lowercase-keys, normalize-url, responselike)"
+      },
+      "subtree_highlights": "The download subtree alone contains approximately 80-100 transitive dependencies, making it one of the densest subtrees in the Juice Shop dependency graph. A DFS traversal reveals 3 distinct vulnerable packages (bl, http-cache-semantics, json-buffer) all reachable from the single direct dependency 'download@8.0.0'."
+    }
+  }
+}

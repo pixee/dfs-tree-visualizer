@@ -1,0 +1,255 @@
+{
+  "project": {
+    "name": "fastapi",
+    "version": "dynamic (from fastapi/__init__.py)",
+    "ecosystem": "pypi",
+    "repository": "https://github.com/fastapi/fastapi",
+    "lockfile": "uv.lock",
+    "build_system": "pdm-backend",
+    "dependency_manager": "uv"
+  },
+  "vulnerable_transitive_dependency": {
+    "name": "urllib3",
+    "version": "<1.26.17 (constrained to >=1.21.1,<1.27 by requests==2.25.1)",
+    "purl": "pkg:pypi/urllib3@1.26.16",
+    "vulnerability": {
+      "id": "CVE-2023-43804",
+      "description": "urllib3 before 1.26.17 and 2.x before 2.0.6 does not remove the HTTP request body when following an HTTP redirect response using status 301, 302, or 303 after the request had its method changed from POST to GET. The Cookie header is also not stripped in cross-origin redirects, allowing sensitive credentials to leak to unauthorized third-party endpoints.",
+      "severity": "HIGH",
+      "cvss_score": 8.1,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N",
+      "fixed_in_version": "1.26.17, 2.0.6",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-43804",
+      "affected_versions": "<1.26.17 || >=2.0.0,<2.0.6",
+      "additional_cves_in_range": [
+        {
+          "id": "CVE-2023-45803",
+          "description": "urllib3 before 1.26.18 and 2.x before 2.0.7 does not strip the request body when redirecting from 303 status responses, potentially leaking sensitive data.",
+          "severity": "MEDIUM",
+          "cvss_score": 4.2,
+          "fixed_in_version": "1.26.18, 2.0.7"
+        },
+        {
+          "id": "CVE-2024-37891",
+          "description": "urllib3 before 1.26.19 and 2.x before 2.2.2 does not strip the Proxy-Authorization header during cross-origin redirects, allowing credentials to leak to a different origin.",
+          "severity": "MEDIUM",
+          "cvss_score": 4.4,
+          "fixed_in_version": "1.26.19, 2.2.2"
+        }
+      ]
+    }
+  },
+  "dependency_chain": {
+    "description": "urllib3 is a transitive dependency, never declared directly in fastapi's pyproject.toml. It is pulled in exclusively through requests==2.25.1, which is pinned as an intentional SCA benchmark dependency. requests 2.25.1 constrains urllib3 to >=1.21.1,<1.27, preventing the use of the maintained urllib3 2.x branch and locking the resolution to the 1.26.x series. Versions of urllib3 before 1.26.17 are vulnerable to CVE-2023-43804 (cookie/credential leakage on cross-origin redirects).",
+    "path": [
+      "fastapi (root, pyproject.toml)",
+      "requests==2.25.1 (direct dependency, pyproject.toml line 53, spec: ==2.25.1, SCA benchmark tier 3)",
+      "urllib3>=1.21.1,<1.27 (VULNERABLE transitive dependency, resolves to 1.26.x)"
+    ],
+    "total_upstream_paths": 1,
+    "all_paths": [
+      ["fastapi", "requests==2.25.1", "urllib3<1.27 (e.g. 1.26.16 or earlier = VULNERABLE)"]
+    ],
+    "note_lockfile_stale": {
+      "description": "The uv.lock file is stale and does not include requests, aiohttp, or lxml. These three SCA benchmark dependencies were added to pyproject.toml after the lock was generated. The lock file's requires-dist metadata for fastapi lists only the original dependencies (starlette, pydantic, typing-extensions, typing-inspection, annotated-doc). Running 'uv lock' would regenerate the lock to include requests==2.25.1 and its transitive deps including urllib3<1.27.",
+      "lockfile_fastapi_deps": [
+        "annotated-doc>=0.0.2",
+        "pydantic>=2.7.0",
+        "starlette>=0.40.0,<1.0.0",
+        "typing-extensions>=4.8.0",
+        "typing-inspection>=0.4.2"
+      ],
+      "pyproject_toml_added_deps": [
+        "aiohttp==3.8.3 (SCA benchmark tier 1, CVE-2024-23334)",
+        "lxml==4.6.3 (SCA benchmark tier 2, CVE-2021-28957)",
+        "requests==2.25.1 (SCA benchmark tier 3, CVE-2023-32681)"
+      ]
+    },
+    "requests_2_25_1_transitive_deps": {
+      "description": "Full transitive dependency tree of requests==2.25.1 as declared in its metadata on PyPI.",
+      "dependencies": [
+        {
+          "name": "chardet",
+          "spec": ">=3.0.2,<5",
+          "latest_in_range": "4.0.0",
+          "known_cves": "none"
+        },
+        {
+          "name": "idna",
+          "spec": ">=2.5,<3",
+          "latest_in_range": "2.10",
+          "known_cves": "none"
+        },
+        {
+          "name": "urllib3",
+          "spec": ">=1.21.1,<1.27",
+          "latest_in_range": "1.26.20",
+          "known_cves": "CVE-2023-43804 (<1.26.17), CVE-2023-45803 (<1.26.18), CVE-2024-37891 (<1.26.19)",
+          "note": "While urllib3 1.26.20 patches known CVEs, the 1.26.x branch is end-of-life and no longer receives security updates. The constraint <1.27 prevents upgrading to the maintained 2.x branch."
+        },
+        {
+          "name": "certifi",
+          "spec": ">=2017.4.17",
+          "latest_in_range": "2026.1.4 (no upper bound, resolves to latest)",
+          "known_cves": "CVE-2023-37920 (affects <2023.7.22, but latest resolves safely)"
+        }
+      ]
+    }
+  },
+  "sbom_locations": {
+    "sbom_file": null,
+    "sbom_format": "N/A (no SBOM generated; dependency data extracted from pyproject.toml and uv.lock)",
+    "lockfile": "uv.lock",
+    "occurrences": [
+      {
+        "location": "pyproject.toml:53",
+        "type": "root_dependency_declaration",
+        "description": "requests==2.25.1 declared as a direct dependency of fastapi under the SCA benchmark comment",
+        "content": {
+          "requests": "==2.25.1"
+        }
+      },
+      {
+        "location": "uv.lock (NOT PRESENT - stale lockfile)",
+        "type": "lockfile_resolution_missing",
+        "description": "The uv.lock was generated before requests==2.25.1 was added to pyproject.toml. Neither requests nor urllib3 appear in the lockfile's fastapi dependency graph. Running 'uv lock' is required to materialize this transitive dependency in the lockfile."
+      },
+      {
+        "location": "uv.lock:4738-4739",
+        "type": "unrelated_lockfile_entry",
+        "description": "requests@2.32.5 exists in the lockfile but is pulled in by other dev dependencies (e.g., types-requests), not by fastapi's core dependencies. This is a different, non-vulnerable version.",
+        "content": {
+          "name": "requests",
+          "version": "2.32.5",
+          "relationship": "indirect (dev dependency transitive)"
+        }
+      },
+      {
+        "location": "uv.lock:5694-5695",
+        "type": "unrelated_lockfile_entry",
+        "description": "urllib3@2.6.3 exists in the lockfile as a transitive dep of requests@2.32.5 (the dev/indirect version). This safe version would NOT be used by requests==2.25.1 since it requires urllib3<1.27.",
+        "content": {
+          "name": "urllib3",
+          "version": "2.6.3",
+          "relationship": "indirect (via requests@2.32.5 dev chain)"
+        }
+      }
+    ]
+  },
+  "dfs_tree_context": {
+    "description": "DFS traversal levels from fastapi root to the vulnerable urllib3 transitive dependency, with sibling dependencies captured at each level for tree visualization context.",
+    "levels": [
+      {
+        "depth": 0,
+        "node": {
+          "name": "fastapi",
+          "version": "dynamic",
+          "purl": "pkg:pypi/fastapi",
+          "type": "root"
+        },
+        "children_summary": {
+          "total_direct_dependencies": 8,
+          "categories": {
+            "core_framework_deps": [
+              {"name": "starlette", "spec": ">=0.40.0,<1.0.0", "resolved_in_lock": "0.52.1"},
+              {"name": "pydantic", "spec": ">=2.7.0", "resolved_in_lock": "2.12.5"},
+              {"name": "typing-extensions", "spec": ">=4.8.0", "resolved_in_lock": "4.15.0"},
+              {"name": "typing-inspection", "spec": ">=0.4.2", "resolved_in_lock": "0.4.2"},
+              {"name": "annotated-doc", "spec": ">=0.0.2", "resolved_in_lock": "0.0.4"}
+            ],
+            "sca_benchmark_deps_vulnerable": [
+              {"name": "aiohttp", "spec": "==3.8.3", "note": "Tier 1 - declared only, CVE-2024-23334 (direct vuln)"},
+              {"name": "lxml", "spec": "==4.6.3", "note": "Tier 2 - imported unused, CVE-2021-28957 (direct vuln)"},
+              {"name": "requests", "spec": "==2.25.1", "note": "Tier 3 - used/replaceable, CVE-2023-32681 (direct vuln), LEADS TO TRANSITIVE VULN"}
+            ]
+          }
+        }
+      },
+      {
+        "depth": 1,
+        "node": {
+          "name": "requests",
+          "version": "2.25.1",
+          "purl": "pkg:pypi/requests@2.25.1",
+          "type": "direct_dependency",
+          "declared_in": "pyproject.toml:53",
+          "spec_range": "==2.25.1",
+          "purpose": "SCA benchmark dependency (tier 3: used and replaceable). HTTP library used via requests.get() in fastapi/utils.py. Replaceable with urllib.request.urlopen().",
+          "own_vulnerability": {
+            "id": "CVE-2023-32681",
+            "description": "Unintended leak of Proxy-Authorization header to destination servers when following redirects to an HTTPS endpoint with a changed host.",
+            "severity": "MEDIUM"
+          }
+        },
+        "siblings_at_this_level": {
+          "description": "Other direct dependencies of fastapi at depth 1",
+          "notable_siblings": [
+            {"name": "starlette", "version": "0.52.1", "deps_count": 2, "note": "core ASGI framework"},
+            {"name": "pydantic", "version": "2.12.5", "deps_count": 5, "note": "data validation"},
+            {"name": "aiohttp", "version": "3.8.3", "deps_count": 8, "note": "SCA benchmark tier 1, also vulnerable (CVE-2024-23334)"},
+            {"name": "lxml", "version": "4.6.3", "deps_count": 0, "note": "SCA benchmark tier 2, also vulnerable (CVE-2021-28957), no Python transitive deps"},
+            {"name": "typing-extensions", "version": "4.15.0", "deps_count": 0},
+            {"name": "typing-inspection", "version": "0.4.2", "deps_count": 1},
+            {"name": "annotated-doc", "version": "0.0.4", "deps_count": 0}
+          ]
+        },
+        "children": {
+          "total": 4,
+          "list": [
+            {
+              "name": "chardet",
+              "spec": ">=3.0.2,<5",
+              "resolved": "4.0.0 (latest in range)",
+              "vulnerable": false
+            },
+            {
+              "name": "idna",
+              "spec": ">=2.5,<3",
+              "resolved": "2.10 (latest in range)",
+              "vulnerable": false
+            },
+            {
+              "name": "urllib3",
+              "spec": ">=1.21.1,<1.27",
+              "resolved": "1.26.20 (latest in range, but versions <1.26.17 are VULNERABLE)",
+              "vulnerable": true,
+              "note": "CVE-2023-43804 affects <1.26.17. Resolver may pick an older cached version."
+            },
+            {
+              "name": "certifi",
+              "spec": ">=2017.4.17",
+              "resolved": "2026.1.4 (latest, no upper bound)",
+              "vulnerable": false
+            }
+          ]
+        }
+      },
+      {
+        "depth": 2,
+        "node": {
+          "name": "urllib3",
+          "version": "<1.27 (constrained by requests==2.25.1; any version <1.26.17 is vulnerable)",
+          "purl": "pkg:pypi/urllib3@1.26.16",
+          "type": "transitive_dependency_VULNERABLE",
+          "lockfile_location": "NOT IN uv.lock (lockfile stale)",
+          "spec_range": ">=1.21.1,<1.27 (from requests==2.25.1)",
+          "vulnerability": "CVE-2023-43804 (affects <1.26.17), CVE-2023-45803 (affects <1.26.18), CVE-2024-37891 (affects <1.26.19)",
+          "end_of_life_note": "urllib3 1.26.x is end-of-life. The constraint <1.27 prevents upgrading to the maintained 2.x series. Even if 1.26.20 is resolved (fixing known CVEs), no future patches will be issued for this branch."
+        },
+        "siblings_at_this_level": {
+          "description": "Other transitive dependencies of requests at depth 2",
+          "siblings": [
+            {"name": "chardet", "version": "4.0.0", "vulnerable": false},
+            {"name": "idna", "version": "2.10", "vulnerable": false},
+            {"name": "certifi", "version": "2026.1.4", "vulnerable": false}
+          ]
+        },
+        "children": {
+          "total": 0,
+          "list": [],
+          "note": "urllib3 has no further Python package dependencies"
+        }
+      }
+    ]
+  }
+}

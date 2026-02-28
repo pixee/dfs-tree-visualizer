@@ -1,0 +1,234 @@
+{
+  "project": {
+    "name": "sentry",
+    "version": "0.0.0",
+    "ecosystem": "yarn",
+    "repository": "git://github.com/getsentry/sentry.git",
+    "lockfile": "yarn.lock"
+  },
+  "vulnerable_transitive_dependency": {
+    "name": "loader-utils",
+    "version": "0.2.17",
+    "purl": "pkg:npm/loader-utils@0.2.17",
+    "vulnerability": {
+      "id": "CVE-2022-37601",
+      "description": "Prototype pollution vulnerability in loader-utils via the parseQuery function. An attacker can manipulate the URL to overwrite the prototype of Object, potentially achieving remote code execution or denial of service in applications that pass untrusted input to parseQuery.",
+      "severity": "CRITICAL",
+      "cvss_score": 9.8,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "fixed_in_version": "1.4.1, 2.0.3, 3.2.1",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-37601",
+      "affected_versions": "<1.4.1 || >=2.0.0 <2.0.3 || >=3.0.0 <3.2.1"
+    }
+  },
+  "dependency_chain": {
+    "description": "loader-utils@0.2.17 is a transitive dependency, never declared directly in package.json. It is pulled in through pegjs-loader@0.5.6, which is a direct dependency of sentry used as a webpack loader for PEG.js grammar files. pegjs-loader is the only package in the dependency tree that requires the vulnerable 0.x range of loader-utils.",
+    "path": [
+      "sentry@0.0.0 (root, package.json)",
+      "pegjs-loader@0.5.6 (direct dependency, package.json line 143, spec: ^0.5.6)",
+      "loader-utils@0.2.17 (VULNERABLE, resolved from spec ^0.2.5)"
+    ],
+    "total_upstream_paths": 1,
+    "all_paths": [
+      ["sentry@0.0.0", "pegjs-loader@0.5.6", "loader-utils@0.2.17"]
+    ],
+    "note_other_loader_utils_versions": {
+      "description": "Three distinct versions of loader-utils coexist in the lockfile. Only 0.2.17 is vulnerable to CVE-2022-37601. Versions 1.1.0 and 2.0.4 are also present but reached via different paths.",
+      "versions": [
+        {
+          "version": "0.2.17",
+          "spec": "^0.2.5",
+          "vulnerable": true,
+          "reached_by": ["pegjs-loader@0.5.6"],
+          "lockfile_line": 8865
+        },
+        {
+          "version": "1.1.0",
+          "spec": "1.1.0",
+          "vulnerable": false,
+          "reached_by": ["po-catalog-loader@2.0.0"],
+          "lockfile_line": 8856
+        },
+        {
+          "version": "2.0.4",
+          "spec": "^2.0.0 / ^2.0.4",
+          "vulnerable": false,
+          "reached_by": [
+            "@pmmmwh/react-refresh-webpack-plugin@0.5.11",
+            "@rsdoctor/core@0.2.5",
+            "url-loader@4.1.1"
+          ],
+          "lockfile_line": 8875
+        }
+      ]
+    }
+  },
+  "sbom_locations": {
+    "sbom_file": null,
+    "sbom_format": "N/A (no SBOM generated; dependency data extracted from yarn.lock)",
+    "lockfile": "yarn.lock",
+    "occurrences": [
+      {
+        "location": "yarn.lock:8865-8873",
+        "type": "lockfile_resolution",
+        "content": {
+          "spec": "loader-utils@^0.2.5",
+          "resolved_version": "0.2.17",
+          "resolved_url": "https://registry.yarnpkg.com/loader-utils/-/loader-utils-0.2.17.tgz#f86e6374d43205a6e6c60e9196f17c0299bfb348",
+          "integrity": "sha1-+G5jdNQyBabmxg6RlvF8Apm/s0g=",
+          "dependencies": {
+            "big.js": "^3.1.3",
+            "emojis-list": "^2.0.0",
+            "json5": "^0.5.0",
+            "object-assign": "^4.0.1"
+          }
+        }
+      },
+      {
+        "location": "yarn.lock:9684-9689",
+        "type": "parent_lockfile_entry",
+        "description": "pegjs-loader declares loader-utils@^0.2.5 as a dependency",
+        "content": {
+          "spec": "pegjs-loader@^0.5.6",
+          "resolved_version": "0.5.6",
+          "dependencies": {
+            "loader-utils": "^0.2.5"
+          }
+        }
+      },
+      {
+        "location": "package.json:143",
+        "type": "root_dependency_declaration",
+        "description": "pegjs-loader declared as a direct dependency of sentry",
+        "content": {
+          "pegjs-loader": "^0.5.6"
+        }
+      }
+    ]
+  },
+  "dfs_tree_context": {
+    "description": "DFS traversal levels from sentry root to the vulnerable loader-utils@0.2.17, with sibling dependencies captured at each level for tree visualization context.",
+    "levels": [
+      {
+        "depth": 0,
+        "node": {
+          "name": "sentry",
+          "version": "0.0.0",
+          "purl": "pkg:npm/sentry@0.0.0",
+          "type": "root"
+        },
+        "children_summary": {
+          "total_direct_dependencies": 118,
+          "total_dev_dependencies": 18,
+          "categories": {
+            "webpack_loaders": [
+              {"name": "babel-loader", "spec": "^9.1.3"},
+              {"name": "css-loader", "spec": "^7.1.1"},
+              {"name": "less-loader", "spec": "^12.2.0"},
+              {"name": "pegjs-loader", "spec": "^0.5.6", "note": "LEADS TO VULNERABLE DEP"},
+              {"name": "po-catalog-loader", "spec": "2.0.0"},
+              {"name": "style-loader", "spec": "^3.3.4"},
+              {"name": "url-loader", "spec": "^4.1.1"}
+            ],
+            "webpack_plugins": [
+              {"name": "compression-webpack-plugin", "spec": "11.1.0"},
+              {"name": "copy-webpack-plugin", "spec": "^12.0.2"},
+              {"name": "css-minimizer-webpack-plugin", "spec": "^6.0.0"},
+              {"name": "fork-ts-checker-webpack-plugin", "spec": "^9.0.2"},
+              {"name": "html-webpack-plugin", "spec": "^5.5.0"},
+              {"name": "mini-css-extract-plugin", "spec": "^2.8.0"},
+              {"name": "terser-webpack-plugin", "spec": "^5.3.10"},
+              {"name": "webpack-remove-empty-scripts", "spec": "^1.0.4"},
+              {"name": "@codecov/webpack-plugin", "spec": "^0.0.1-beta.8"},
+              {"name": "@pmmmwh/react-refresh-webpack-plugin", "spec": "0.5.11"},
+              {"name": "@rsdoctor/webpack-plugin", "spec": "^0.2.5"}
+            ],
+            "webpack_core": [
+              {"name": "webpack", "spec": "5.91.0"},
+              {"name": "webpack-cli", "spec": "5.1.4"},
+              {"name": "webpack-dev-server", "spec": "5.0.4"}
+            ],
+            "pegjs_related_siblings": [
+              {"name": "pegjs", "spec": "^0.10.0"},
+              {"name": "@types/pegjs", "spec": "^0.10.3"}
+            ]
+          }
+        }
+      },
+      {
+        "depth": 1,
+        "node": {
+          "name": "pegjs-loader",
+          "version": "0.5.6",
+          "purl": "pkg:npm/pegjs-loader@0.5.6",
+          "type": "direct_dependency",
+          "declared_in": "package.json:143",
+          "spec_range": "^0.5.6",
+          "purpose": "Webpack loader that compiles PEG.js grammar files (.pegjs) into JavaScript parser modules at build time"
+        },
+        "siblings_at_this_level": {
+          "description": "Other direct dependencies of sentry at depth 1 (subset of notable siblings in the webpack loader category)",
+          "notable_siblings": [
+            {"name": "babel-loader", "version": "9.1.3", "deps_count": 1},
+            {"name": "css-loader", "version": "7.1.1", "deps_count": 7},
+            {"name": "less-loader", "version": "12.2.0", "deps_count": 1},
+            {"name": "po-catalog-loader", "version": "2.0.0", "deps_count": 1, "note": "also depends on loader-utils but version 1.1.0"},
+            {"name": "style-loader", "version": "3.3.4", "deps_count": 0},
+            {"name": "url-loader", "version": "4.1.1", "deps_count": 2, "note": "depends on loader-utils ^2.0.0 (resolved 2.0.4, not vulnerable)"}
+          ]
+        },
+        "children": {
+          "total": 1,
+          "list": [
+            {
+              "name": "loader-utils",
+              "spec": "^0.2.5",
+              "resolved": "0.2.17",
+              "vulnerable": true
+            }
+          ]
+        }
+      },
+      {
+        "depth": 2,
+        "node": {
+          "name": "loader-utils",
+          "version": "0.2.17",
+          "purl": "pkg:npm/loader-utils@0.2.17",
+          "type": "transitive_dependency_VULNERABLE",
+          "lockfile_location": "yarn.lock:8865-8873",
+          "spec_range": "^0.2.5",
+          "vulnerability": "CVE-2022-37601"
+        },
+        "siblings_at_this_level": {
+          "description": "loader-utils@0.2.17 is the only child of pegjs-loader, so there are no siblings at this depth under pegjs-loader. However, other versions of loader-utils exist as children of other depth-1 nodes.",
+          "other_loader_utils_instances": [
+            {
+              "version": "1.1.0",
+              "parent": "po-catalog-loader@2.0.0",
+              "vulnerable": false
+            },
+            {
+              "version": "2.0.4",
+              "parents": [
+                "@pmmmwh/react-refresh-webpack-plugin@0.5.11",
+                "@rsdoctor/core@0.2.5 (via @rsdoctor/webpack-plugin@0.2.5)",
+                "url-loader@4.1.1"
+              ],
+              "vulnerable": false
+            }
+          ]
+        },
+        "children": {
+          "total": 4,
+          "list": [
+            {"name": "big.js", "spec": "^3.1.3", "resolved": "3.2.0"},
+            {"name": "emojis-list", "spec": "^2.0.0", "resolved": "2.1.0"},
+            {"name": "json5", "spec": "^0.5.0", "resolved": "0.5.1"},
+            {"name": "object-assign", "spec": "^4.0.1", "resolved": "4.1.1"}
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,293 @@
+{
+  "project": {
+    "name": "jenkins",
+    "display_name": "Jenkins",
+    "version": "2.552-SNAPSHOT",
+    "ecosystem": "maven",
+    "group": "org.jenkins-ci.main",
+    "artifact": "jenkins-parent",
+    "purl": "pkg:maven/org.jenkins-ci.main/jenkins-parent@2.552-SNAPSHOT?type=pom",
+    "repository": "https://github.com/jenkinsci/jenkins"
+  },
+  "vulnerable_transitive_dependency": {
+    "group": "org.apache.commons",
+    "artifact": "commons-text",
+    "version": "1.9",
+    "purl": "pkg:maven/org.apache.commons/commons-text@1.9?type=jar",
+    "description": "Apache Commons Text is a library focused on algorithms working on strings.",
+    "license": "Apache-2.0",
+    "vulnerability": {
+      "id": "CVE-2022-42889",
+      "aliases": ["GHSA-599f-7c49-w659"],
+      "description": "Apache Commons Text performs variable interpolation, allowing properties to be dynamically evaluated and expanded. The standard format for interpolation is '${prefix:name}', where 'prefix' is used to locate an instance of org.apache.commons.text.lookup.StringLookup that performs the interpolation. Starting with version 1.5 and continuing through 1.9, the set of default Lookup instances included interpolators that could result in arbitrary code execution or contact with remote servers, including 'script' (execute expressions using the JVM script execution engine), 'dns' (resolve DNS records), and 'url' (load values from URLs). This is a Remote Code Execution (RCE) vulnerability known as Text4Shell.",
+      "severity": "CRITICAL",
+      "cvss_score": 9.8,
+      "fixed_in_version": "1.10.0",
+      "affected_versions": "[1.5, 1.9]",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-42889",
+      "references": [
+        "https://github.com/advisories/GHSA-599f-7c49-w659",
+        "https://lists.apache.org/thread/n2bd4vdsgkqh2tm14jber0d2zfqctk8q",
+        "https://commons.apache.org/proper/commons-text/security.html"
+      ]
+    }
+  },
+  "dependency_chain": {
+    "description": "commons-text:1.9 is a direct dependency of jenkins-cli, which is itself depended upon by jenkins-core and jenkins-war. All paths converge through cli as the sole direct parent of commons-text. The cli module uses commons-text for string interpolation/manipulation in the Jenkins CLI subsystem.",
+    "primary_path": [
+      "org.jenkins-ci.main:jenkins-parent@2.552-SNAPSHOT",
+      "org.jenkins-ci.main:jenkins-war@2.552-SNAPSHOT",
+      "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+      "org.apache.commons:commons-text@1.9"
+    ],
+    "primary_path_purls": [
+      "pkg:maven/org.jenkins-ci.main/jenkins-parent@2.552-SNAPSHOT?type=pom",
+      "pkg:maven/org.jenkins-ci.main/jenkins-war@2.552-SNAPSHOT?type=war",
+      "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+      "pkg:maven/org.apache.commons/commons-text@1.9?type=jar"
+    ],
+    "total_upstream_paths": 4,
+    "all_paths": [
+      [
+        "org.jenkins-ci.main:jenkins-parent@2.552-SNAPSHOT",
+        "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+        "org.apache.commons:commons-text@1.9"
+      ],
+      [
+        "org.jenkins-ci.main:jenkins-parent@2.552-SNAPSHOT",
+        "org.jenkins-ci.main:jenkins-core@2.552-SNAPSHOT",
+        "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+        "org.apache.commons:commons-text@1.9"
+      ],
+      [
+        "org.jenkins-ci.main:jenkins-parent@2.552-SNAPSHOT",
+        "org.jenkins-ci.main:jenkins-war@2.552-SNAPSHOT",
+        "org.jenkins-ci.main:jenkins-core@2.552-SNAPSHOT",
+        "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+        "org.apache.commons:commons-text@1.9"
+      ],
+      [
+        "org.jenkins-ci.main:jenkins-parent@2.552-SNAPSHOT",
+        "org.jenkins-ci.main:jenkins-war@2.552-SNAPSHOT",
+        "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+        "org.apache.commons:commons-text@1.9"
+      ]
+    ],
+    "all_paths_purls": [
+      [
+        "pkg:maven/org.jenkins-ci.main/jenkins-parent@2.552-SNAPSHOT?type=pom",
+        "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+        "pkg:maven/org.apache.commons/commons-text@1.9?type=jar"
+      ],
+      [
+        "pkg:maven/org.jenkins-ci.main/jenkins-parent@2.552-SNAPSHOT?type=pom",
+        "pkg:maven/org.jenkins-ci.main/jenkins-core@2.552-SNAPSHOT?type=jar",
+        "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+        "pkg:maven/org.apache.commons/commons-text@1.9?type=jar"
+      ],
+      [
+        "pkg:maven/org.jenkins-ci.main/jenkins-parent@2.552-SNAPSHOT?type=pom",
+        "pkg:maven/org.jenkins-ci.main/jenkins-war@2.552-SNAPSHOT?type=war",
+        "pkg:maven/org.jenkins-ci.main/jenkins-core@2.552-SNAPSHOT?type=jar",
+        "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+        "pkg:maven/org.apache.commons/commons-text@1.9?type=jar"
+      ],
+      [
+        "pkg:maven/org.jenkins-ci.main/jenkins-parent@2.552-SNAPSHOT?type=pom",
+        "pkg:maven/org.jenkins-ci.main/jenkins-war@2.552-SNAPSHOT?type=war",
+        "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+        "pkg:maven/org.apache.commons/commons-text@1.9?type=jar"
+      ]
+    ]
+  },
+  "sbom_locations": {
+    "sbom_format": "CycloneDX",
+    "sbom_spec_version": "1.5",
+    "sbom_file": "target/sbom.json",
+    "occurrences": [
+      {
+        "location": "components[18]",
+        "type": "component_entry",
+        "description": "The CycloneDX component record for commons-text, including publisher, hashes, license, and purl",
+        "bom_ref": "pkg:maven/org.apache.commons/commons-text@1.9?type=jar",
+        "data": {
+          "publisher": "The Apache Software Foundation",
+          "group": "org.apache.commons",
+          "name": "commons-text",
+          "version": "1.9",
+          "scope": "required",
+          "type": "library",
+          "purl": "pkg:maven/org.apache.commons/commons-text@1.9?type=jar"
+        }
+      },
+      {
+        "location": "dependencies[19]",
+        "type": "dependency_graph_node",
+        "description": "The dependency graph node for commons-text itself, showing its own downstream dependency on commons-lang3",
+        "ref": "pkg:maven/org.apache.commons/commons-text@1.9?type=jar",
+        "dependsOn": [
+          "pkg:maven/org.apache.commons/commons-lang3@3.11?type=jar"
+        ]
+      },
+      {
+        "location": "dependencies[9].dependsOn[8]",
+        "type": "dependency_graph_edge",
+        "description": "The edge from cli to commons-text -- the sole direct parent declaring commons-text as a dependency",
+        "parent": "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+        "child": "pkg:maven/org.apache.commons/commons-text@1.9?type=jar",
+        "parent_node_location": "dependencies[9]"
+      },
+      {
+        "location": "dependencies[0]",
+        "type": "dependency_graph_root",
+        "description": "The root node (jenkins-parent) of the dependency graph, which is the ultimate ancestor of all paths",
+        "ref": "pkg:maven/org.jenkins-ci.main/jenkins-parent@2.552-SNAPSHOT?type=pom"
+      },
+      {
+        "location": "dependencies[22]",
+        "type": "dependency_graph_intermediate",
+        "description": "jenkins-core node, which depends on cli and is an intermediate node in 2 of the 4 upstream paths",
+        "ref": "pkg:maven/org.jenkins-ci.main/jenkins-core@2.552-SNAPSHOT?type=jar"
+      },
+      {
+        "location": "dependencies[94]",
+        "type": "dependency_graph_intermediate",
+        "description": "jenkins-war node, which depends on both cli and jenkins-core, and is an intermediate node in 2 of the 4 upstream paths",
+        "ref": "pkg:maven/org.jenkins-ci.main/jenkins-war@2.552-SNAPSHOT?type=war"
+      }
+    ]
+  },
+  "dfs_tree_context": {
+    "description": "Sibling and branch context at each level of the primary dependency path (root -> war -> cli -> commons-text) for DFS visualization. Each level shows all children of the node at that depth, with the target_child indicating which branch leads toward the vulnerable dependency.",
+    "levels": [
+      {
+        "depth": 0,
+        "node": "org.jenkins-ci.main:jenkins-parent@2.552-SNAPSHOT",
+        "node_purl": "pkg:maven/org.jenkins-ci.main/jenkins-parent@2.552-SNAPSHOT?type=pom",
+        "sbom_location": "dependencies[0]",
+        "children": [
+          "org.jenkins-ci.main:jenkins-bom@2.552-SNAPSHOT",
+          "org.jenkins-ci.main:websocket-spi@2.552-SNAPSHOT",
+          "org.jenkins-ci.main:websocket-jetty12-ee9@2.552-SNAPSHOT",
+          "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+          "org.jenkins-ci.main:jenkins-core@2.552-SNAPSHOT",
+          "org.jenkins-ci.main:jenkins-war@2.552-SNAPSHOT"
+        ],
+        "children_purls": [
+          "pkg:maven/org.jenkins-ci.main/jenkins-bom@2.552-SNAPSHOT?type=pom",
+          "pkg:maven/org.jenkins-ci.main/websocket-spi@2.552-SNAPSHOT?type=jar",
+          "pkg:maven/org.jenkins-ci.main/websocket-jetty12-ee9@2.552-SNAPSHOT?type=jar",
+          "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+          "pkg:maven/org.jenkins-ci.main/jenkins-core@2.552-SNAPSHOT?type=jar",
+          "pkg:maven/org.jenkins-ci.main/jenkins-war@2.552-SNAPSHOT?type=war"
+        ],
+        "children_count": 6,
+        "target_child": "org.jenkins-ci.main:jenkins-war@2.552-SNAPSHOT",
+        "target_child_index": 5,
+        "note": "Root reactor module. Multiple children lead to commons-text: cli directly, jenkins-core via cli, and jenkins-war via cli or via jenkins-core->cli."
+      },
+      {
+        "depth": 1,
+        "node": "org.jenkins-ci.main:jenkins-war@2.552-SNAPSHOT",
+        "node_purl": "pkg:maven/org.jenkins-ci.main/jenkins-war@2.552-SNAPSHOT?type=war",
+        "sbom_location": "dependencies[94]",
+        "children": [
+          "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+          "org.jenkins-ci.main:remoting@3355.v388858a_47b_33",
+          "org.jenkins-ci.main:jenkins-core@2.552-SNAPSHOT",
+          "org.jenkins-ci.main:websocket-jetty12-ee9@2.552-SNAPSHOT",
+          "org.slf4j:slf4j-jdk14@2.0.17"
+        ],
+        "children_purls": [
+          "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+          "pkg:maven/org.jenkins-ci.main/remoting@3355.v388858a_47b_33?type=jar",
+          "pkg:maven/org.jenkins-ci.main/jenkins-core@2.552-SNAPSHOT?type=jar",
+          "pkg:maven/org.jenkins-ci.main/websocket-jetty12-ee9@2.552-SNAPSHOT?type=jar",
+          "pkg:maven/org.slf4j/slf4j-jdk14@2.0.17?type=jar"
+        ],
+        "children_count": 5,
+        "target_child": "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+        "target_child_index": 0,
+        "note": "The deployable war artifact. cli is a direct dependency here, and also reachable transitively via jenkins-core."
+      },
+      {
+        "depth": 2,
+        "node": "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+        "node_purl": "pkg:maven/org.jenkins-ci.main/cli@2.552-SNAPSHOT?type=jar",
+        "sbom_location": "dependencies[9]",
+        "children": [
+          "commons-io:commons-io@2.21.0",
+          "org.apache.sshd:sshd-common@2.17.1",
+          "org.apache.sshd:sshd-core@2.17.1",
+          "org.bouncycastle:bcprov-jdk18on@1.83",
+          "org.glassfish.tyrus.bundles:tyrus-standalone-client-jdk@2.2.2",
+          "org.jenkins-ci:annotation-indexer@1.213.v92788b_1f0a_21",
+          "org.jvnet.localizer:localizer@1.31",
+          "org.slf4j:slf4j-jdk14@2.0.17",
+          "org.apache.commons:commons-text@1.9",
+          "com.github.spotbugs:spotbugs-annotations@4.9.8",
+          "org.kohsuke:access-modifier-annotation@1.35"
+        ],
+        "children_purls": [
+          "pkg:maven/commons-io/commons-io@2.21.0?type=jar",
+          "pkg:maven/org.apache.sshd/sshd-common@2.17.1?type=jar",
+          "pkg:maven/org.apache.sshd/sshd-core@2.17.1?type=jar",
+          "pkg:maven/org.bouncycastle/bcprov-jdk18on@1.83?type=jar",
+          "pkg:maven/org.glassfish.tyrus.bundles/tyrus-standalone-client-jdk@2.2.2?type=jar",
+          "pkg:maven/org.jenkins-ci/annotation-indexer@1.213.v92788b_1f0a_21?type=jar",
+          "pkg:maven/org.jvnet.localizer/localizer@1.31?type=jar",
+          "pkg:maven/org.slf4j/slf4j-jdk14@2.0.17?type=jar",
+          "pkg:maven/org.apache.commons/commons-text@1.9?type=jar",
+          "pkg:maven/com.github.spotbugs/spotbugs-annotations@4.9.8?type=jar",
+          "pkg:maven/org.kohsuke/access-modifier-annotation@1.35?type=jar"
+        ],
+        "children_count": 11,
+        "target_child": "org.apache.commons:commons-text@1.9",
+        "target_child_index": 8,
+        "note": "The Jenkins CLI module. This is the ONLY direct parent of commons-text in the entire dependency graph. commons-text is a direct (non-transitive) compile-scope dependency here."
+      },
+      {
+        "depth": 3,
+        "node": "org.apache.commons:commons-text@1.9",
+        "node_purl": "pkg:maven/org.apache.commons/commons-text@1.9?type=jar",
+        "sbom_location": "dependencies[19]",
+        "children": [
+          "org.apache.commons:commons-lang3@3.11"
+        ],
+        "children_purls": [
+          "pkg:maven/org.apache.commons/commons-lang3@3.11?type=jar"
+        ],
+        "children_count": 1,
+        "target_child": null,
+        "target_child_index": null,
+        "note": "The VULNERABLE leaf node (CVE-2022-42889). Its only dependency is commons-lang3@3.11. This is the terminal node in the DFS traversal."
+      }
+    ],
+    "alternate_branch_context": {
+      "description": "Additional DFS context for the alternate path through jenkins-core",
+      "levels": [
+        {
+          "depth": 1,
+          "node": "org.jenkins-ci.main:jenkins-core@2.552-SNAPSHOT",
+          "node_purl": "pkg:maven/org.jenkins-ci.main/jenkins-core@2.552-SNAPSHOT?type=jar",
+          "sbom_location": "dependencies[22]",
+          "children_count": 55,
+          "target_child": "org.jenkins-ci.main:cli@2.552-SNAPSHOT",
+          "target_child_index": 0,
+          "notable_siblings": [
+            "org.jenkins-ci.main:remoting@3355.v388858a_47b_33",
+            "com.google.guava:guava@33.5.0-jre",
+            "com.google.inject:guice@6.0.0",
+            "com.thoughtworks.xstream:xstream@1.4.21",
+            "org.springframework.security:spring-security-web@6.5.8",
+            "org.apache.logging.log4j:log4j-core@2.14.1",
+            "org.apache.commons:commons-compress@1.20",
+            "org.codehaus.groovy:groovy-all@2.4.21",
+            "org.kohsuke.stapler:stapler@2074.v6ff4fa_fccff7"
+          ],
+          "note": "jenkins-core has 55 direct dependencies. cli is first among them. This is the largest module and its dependency on cli makes commons-text reachable from jenkins-core transitively."
+        }
+      ]
+    }
+  }
+}

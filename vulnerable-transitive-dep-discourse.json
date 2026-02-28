@@ -1,0 +1,337 @@
+{
+  "project": {
+    "name": "discourse",
+    "version": "2026.2.0-latest",
+    "ecosystem": "ruby+pnpm",
+    "repository": "https://github.com/discourse/discourse",
+    "lockfiles": ["Gemfile.lock", "pnpm-lock.yaml"]
+  },
+  "vulnerable_transitive_dependency": {
+    "name": "faraday",
+    "version": "2.14.1",
+    "purl": "pkg:gem/faraday@2.14.1",
+    "vulnerability": {
+      "id": "CVE-2026-25765",
+      "description": "Server-Side Request Forgery (SSRF) vulnerability in Faraday HTTP client library. An attacker can craft requests that cause the Faraday client to make unintended HTTP requests to internal services, potentially exposing internal network resources, reading metadata endpoints, or pivoting to attack internal infrastructure.",
+      "severity": "MEDIUM",
+      "cvss_score": 6.5,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:L/I:L/A:N",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2026-25765",
+      "affected_versions": ">= 2.0.0, < 2.15.0"
+    },
+    "selection_rationale": "Faraday was chosen as the most complex dependency because it has 6 distinct upstream paths from direct Gemfile dependencies, crosses multiple functional domains (authentication, API integration, vendor plugins), and its own transitive sub-chain (faraday -> faraday-net_http -> net-http -> uri) links to a SECOND vulnerable dependency (uri@1.1.1, CVE-2025-61594). This creates a rare dual-vulnerability transitive chain within a single dependency subgraph."
+  },
+  "dependency_chain": {
+    "description": "faraday@2.14.1 is BOTH a direct dependency (declared in Gemfile line 257) AND a transitive dependency reached through 5 additional indirect paths. It is pulled in by octokit (GitHub API client), sawyer (GitHub API hypermedia layer), oauth2 (OAuth2 authentication via omniauth), zendesk_api (Zendesk plugin integration), and faraday-retry (retry middleware). Additionally, faraday's own sub-dependency chain faraday -> faraday-net_http -> net-http -> uri connects it to the separately-vulnerable uri@1.1.1 gem (CVE-2025-61594, credential exposure).",
+    "path": [
+      "discourse@2026.2.0-latest (root, Gemfile)",
+      "omniauth-google-oauth2@1.0.1 (direct dependency, Gemfile line ~849)",
+      "oauth2@1.4.11 (transitive, spec ~> 1.1)",
+      "faraday@2.14.1 (VULNERABLE, resolved from spec >= 0.17.3, < 3.0)"
+    ],
+    "total_upstream_paths": 6,
+    "all_paths": [
+      ["discourse@2026.2.0-latest", "faraday@2.14.1 (DIRECT, Gemfile:257)"],
+      ["discourse@2026.2.0-latest", "faraday-retry@2.3.2 (DIRECT, Gemfile:258)", "faraday@2.14.1"],
+      ["discourse@2026.2.0-latest", "octokit@5.6.1 (DIRECT, Gemfile:844)", "faraday@2.14.1"],
+      ["discourse@2026.2.0-latest", "octokit@5.6.1 (DIRECT)", "sawyer@0.9.3", "faraday@2.14.1"],
+      ["discourse@2026.2.0-latest", "zendesk_api@1.38.0.rc1 (DIRECT, Gemfile:921)", "faraday@2.14.1"],
+      ["discourse@2026.2.0-latest", "omniauth-google-oauth2@1.0.1 (DIRECT)", "oauth2@1.4.11", "faraday@2.14.1"]
+    ],
+    "additional_indirect_consumers": [
+      {
+        "path": ["discourse", "omniauth-facebook@9.0.0", "omniauth-oauth2@1.7.3", "oauth2@1.4.11", "faraday@2.14.1"],
+        "note": "4-hop chain through Facebook OAuth"
+      },
+      {
+        "path": ["discourse", "omniauth-github@2.0.0", "omniauth-oauth2@1.7.3", "oauth2@1.4.11", "faraday@2.14.1"],
+        "note": "4-hop chain through GitHub OAuth"
+      }
+    ],
+    "cross_vulnerability_sub_chain": {
+      "description": "faraday itself depends on faraday-net_http, which depends on net-http, which depends on uri. The uri@1.1.1 gem is ALSO vulnerable (CVE-2025-61594, HIGH - credential exposure). This means a single request through faraday is processed by TWO vulnerable libraries.",
+      "chain": ["faraday@2.14.1", "faraday-net_http@3.4.2", "net-http@0.8.0", "uri@1.1.1 (CVE-2025-61594)"],
+      "uri_vulnerability": {
+        "id": "CVE-2025-61594",
+        "severity": "HIGH",
+        "description": "Credential exposure in URI parsing - userinfo components may be leaked in logs or error messages"
+      }
+    }
+  },
+  "other_vulnerable_dependencies_found": {
+    "ruby": [
+      {
+        "name": "uri",
+        "version": "1.1.1",
+        "purl": "pkg:gem/uri@1.1.1",
+        "vulnerability_id": "CVE-2025-61594",
+        "severity": "HIGH",
+        "upstream_paths_count": 2,
+        "paths": [
+          ["discourse", "activesupport@8.0.4 (DIRECT)", "uri@1.1.1"],
+          ["discourse", "net-http@0.8.0 (DIRECT)", "uri@1.1.1"]
+        ],
+        "note": "Also reachable transitively via faraday -> faraday-net_http -> net-http -> uri"
+      }
+    ],
+    "pnpm": [
+      {
+        "name": "minimatch",
+        "version": "10.1.1",
+        "purl": "pkg:npm/minimatch@10.1.1",
+        "vulnerability_id": "CVE-2026-26996",
+        "severity": "HIGH",
+        "upstream_paths_count": 3,
+        "paths": [
+          ["discourse (root)", "custom-proxy (workspace)", "glob@13.0.0 (devDep)", "minimatch@10.1.1"],
+          ["discourse (root)", "asset-processor (workspace)", "ember-cli-htmlbars@7.0.0", "walk-sync@4.0.1", "minimatch@10.1.1"],
+          ["discourse (root)", "@types/rimraf@2.0.5 (via fixturify)", "@types/glob@9.0.0", "glob@13.0.0", "minimatch@10.1.1"]
+        ]
+      },
+      {
+        "name": "rollup",
+        "version": "4.53.5",
+        "purl": "pkg:npm/rollup@4.53.5",
+        "vulnerability_id": "CVE-2026-27606",
+        "severity": "HIGH",
+        "upstream_paths_count": 3,
+        "paths": [
+          ["discourse (root)", "asset-processor (workspace)", "@rollup/plugin-babel@6.1.0", "rollup@4.53.5"],
+          ["discourse (root)", "asset-processor (workspace)", "vitest@4.0.16 (devDep)", "vite@7.3.0", "rollup@4.53.5"],
+          ["discourse (root)", "asset-processor (workspace)", "@rollup/plugin-babel@6.1.0", "@rollup/pluginutils@5.3.0", "rollup@4.53.5"]
+        ]
+      }
+    ]
+  },
+  "sbom_locations": {
+    "sbom_file": null,
+    "sbom_format": "N/A (no SBOM generated; dependency data extracted from Gemfile.lock and pnpm-lock.yaml)",
+    "lockfiles": {
+      "ruby": "Gemfile.lock",
+      "pnpm": "pnpm-lock.yaml"
+    },
+    "occurrences": [
+      {
+        "location": "Gemfile.lock:168-171",
+        "type": "lockfile_resolution",
+        "content": {
+          "spec": "faraday (2.14.1)",
+          "dependencies": {
+            "faraday-net_http": ">= 2.0, < 3.5",
+            "json": null,
+            "logger": null
+          }
+        }
+      },
+      {
+        "location": "Gemfile.lock:995",
+        "type": "lockfile_checksum",
+        "content": {
+          "spec": "faraday (2.14.1)",
+          "sha256": "a43cceedc1e39d188f4d2cdd360a8aaa6a11da0c407052e426ba8d3fb42ef61c"
+        }
+      },
+      {
+        "location": "Gemfile.lock:803",
+        "type": "direct_dependency_declaration",
+        "description": "faraday is listed in the DEPENDENCIES section of Gemfile.lock"
+      },
+      {
+        "location": "Gemfile:257",
+        "type": "root_dependency_declaration",
+        "content": {
+          "faraday": "gem \"faraday\" (no version constraint)"
+        }
+      },
+      {
+        "location": "Gemfile.lock:351",
+        "type": "parent_lockfile_entry",
+        "description": "oauth2@1.4.11 declares faraday (>= 0.17.3, < 3.0) as a dependency"
+      },
+      {
+        "location": "Gemfile.lock:357",
+        "type": "parent_lockfile_entry",
+        "description": "octokit@5.6.1 declares faraday (>= 1, < 3) as a dependency"
+      },
+      {
+        "location": "Gemfile.lock:638",
+        "type": "parent_lockfile_entry",
+        "description": "sawyer@0.9.3 declares faraday (>= 0.17.3, < 3) as a dependency"
+      },
+      {
+        "location": "Gemfile.lock:734",
+        "type": "parent_lockfile_entry",
+        "description": "zendesk_api@1.38.0.rc1 declares faraday (> 2.0.0) as a dependency"
+      }
+    ]
+  },
+  "dfs_tree_context": {
+    "description": "DFS traversal levels from discourse root to the vulnerable faraday@2.14.1, following the deepest and most interesting path (through omniauth-google-oauth2 -> oauth2 -> faraday), with sibling dependencies and cross-vulnerability context at each level.",
+    "levels": [
+      {
+        "depth": 0,
+        "node": {
+          "name": "discourse",
+          "version": "2026.2.0-latest",
+          "purl": "pkg:gem/discourse@2026.2.0-latest",
+          "type": "root"
+        },
+        "children_summary": {
+          "total_direct_dependencies_gemfile": 120,
+          "total_direct_dependencies_pnpm_root": 21,
+          "total_pnpm_workspace_packages": 11,
+          "categories": {
+            "http_and_networking": [
+              {"name": "faraday", "spec": "no constraint", "note": "DIRECT path to VULNERABLE DEP"},
+              {"name": "faraday-retry", "spec": "no constraint", "note": "also depends on faraday"},
+              {"name": "faraday-multipart", "spec": "require: false"},
+              {"name": "net-http", "spec": "no constraint", "note": "depends on vulnerable uri@1.1.1"},
+              {"name": "excon", "spec": "no constraint"}
+            ],
+            "authentication_oauth": [
+              {"name": "omniauth", "spec": "no constraint"},
+              {"name": "omniauth-facebook", "spec": "no constraint", "note": "-> omniauth-oauth2 -> oauth2 -> faraday"},
+              {"name": "omniauth-github", "spec": "no constraint", "note": "-> omniauth-oauth2 -> oauth2 -> faraday"},
+              {"name": "omniauth-google-oauth2", "spec": "no constraint", "note": "LEADS TO DEEPEST CHAIN -> oauth2 -> faraday"},
+              {"name": "omniauth-oauth2", "spec": "no constraint", "note": "-> oauth2 -> faraday"},
+              {"name": "omniauth-twitter", "spec": "no constraint"}
+            ],
+            "api_integrations": [
+              {"name": "octokit", "spec": "no constraint", "note": "-> faraday AND -> sawyer -> faraday"},
+              {"name": "sawyer", "spec": "no constraint", "note": "-> faraday"},
+              {"name": "zendesk_api", "spec": "require: false", "note": "-> faraday"}
+            ],
+            "rails_core": [
+              {"name": "activesupport", "spec": "~> 8.0.0", "note": "depends on vulnerable uri@1.1.1"},
+              {"name": "activerecord", "spec": "~> 8.0.0"},
+              {"name": "actionpack", "spec": "~> 8.0.0"},
+              {"name": "actionmailer", "spec": "~> 8.0.0"},
+              {"name": "railties", "spec": "~> 8.0.0"}
+            ]
+          }
+        }
+      },
+      {
+        "depth": 1,
+        "node": {
+          "name": "omniauth-google-oauth2",
+          "version": "1.0.1",
+          "purl": "pkg:gem/omniauth-google-oauth2@1.0.1",
+          "type": "direct_dependency",
+          "declared_in": "Gemfile (line ~849)",
+          "spec_range": "no constraint",
+          "purpose": "OmniAuth strategy for authenticating users via Google's OAuth2 API, used for Google login in Discourse"
+        },
+        "siblings_at_this_level": {
+          "description": "Other direct dependencies at depth 1 that also lead to faraday@2.14.1",
+          "notable_siblings": [
+            {"name": "faraday", "version": "2.14.1", "note": "DIRECT dep, shortest path (depth 1)"},
+            {"name": "faraday-retry", "version": "2.3.2", "note": "depth 2 path to faraday"},
+            {"name": "octokit", "version": "5.6.1", "note": "depth 2 path to faraday, and depth 3 via sawyer"},
+            {"name": "sawyer", "version": "0.9.3", "note": "depth 2 path to faraday"},
+            {"name": "zendesk_api", "version": "1.38.0.rc1", "note": "depth 2 path to faraday"},
+            {"name": "omniauth-facebook", "version": "9.0.0", "note": "depth 4 path via omniauth-oauth2 -> oauth2 -> faraday"},
+            {"name": "omniauth-github", "version": "2.0.0", "note": "depth 4 path via omniauth-oauth2 -> oauth2 -> faraday"}
+          ]
+        },
+        "children": {
+          "total": 3,
+          "list": [
+            {"name": "jwt", "spec": ">= 2.0", "resolved": "2.x"},
+            {"name": "oauth2", "spec": "~> 1.1", "resolved": "1.4.11", "note": "LEADS TO FARADAY"},
+            {"name": "omniauth-oauth2", "spec": "~> 1.7.1", "resolved": "1.7.3", "note": "also depends on oauth2"}
+          ]
+        }
+      },
+      {
+        "depth": 2,
+        "node": {
+          "name": "oauth2",
+          "version": "1.4.11",
+          "purl": "pkg:gem/oauth2@1.4.11",
+          "type": "transitive_dependency",
+          "lockfile_location": "Gemfile.lock:350-355",
+          "spec_range": "~> 1.1",
+          "purpose": "Ruby wrapper for the OAuth 2.0 specification, used by omniauth-oauth2 and omniauth-google-oauth2 to handle OAuth2 token exchange flows"
+        },
+        "siblings_at_this_level": {
+          "description": "Other children of omniauth-google-oauth2 at depth 2",
+          "siblings": [
+            {"name": "jwt", "version": "2.x", "purpose": "JSON Web Token implementation"},
+            {"name": "omniauth-oauth2", "version": "1.7.3", "purpose": "Generic OAuth2 strategy for OmniAuth", "note": "also depends on oauth2@1.4.11, creating a diamond dependency"}
+          ]
+        },
+        "children": {
+          "total": 5,
+          "list": [
+            {"name": "faraday", "spec": ">= 0.17.3, < 3.0", "resolved": "2.14.1", "vulnerable": true},
+            {"name": "jwt", "spec": ">= 1.0, < 3.0"},
+            {"name": "multi_json", "spec": "~> 1.3"},
+            {"name": "multi_xml", "spec": "~> 0.5"},
+            {"name": "rack", "spec": ">= 1.2, < 4"}
+          ]
+        }
+      },
+      {
+        "depth": 3,
+        "node": {
+          "name": "faraday",
+          "version": "2.14.1",
+          "purl": "pkg:gem/faraday@2.14.1",
+          "type": "transitive_dependency_VULNERABLE",
+          "lockfile_location": "Gemfile.lock:168-171 (spec), 995 (checksum)",
+          "spec_range": ">= 0.17.3, < 3.0 (from oauth2)",
+          "vulnerability": "CVE-2026-25765"
+        },
+        "siblings_at_this_level": {
+          "description": "faraday shares depth-3 position with other oauth2 dependencies. No other vulnerable dependencies at this level.",
+          "siblings": [
+            {"name": "jwt", "resolved": "2.x"},
+            {"name": "multi_json", "resolved": "1.18.0"},
+            {"name": "multi_xml", "resolved": "0.7.2"},
+            {"name": "rack", "resolved": "2.2.22"}
+          ]
+        },
+        "children": {
+          "total": 3,
+          "list": [
+            {
+              "name": "faraday-net_http",
+              "spec": ">= 2.0, < 3.5",
+              "resolved": "3.4.2",
+              "note": "LEADS TO net-http -> uri@1.1.1 (SECOND VULNERABLE DEP)"
+            },
+            {"name": "json", "spec": null, "resolved": "stdlib"},
+            {"name": "logger", "spec": null, "resolved": "1.7.0"}
+          ]
+        },
+        "cross_vulnerability_continuation": {
+          "description": "The DFS tree continues below faraday through faraday-net_http -> net-http -> uri@1.1.1, reaching the second vulnerable gem. This 6-hop chain (discourse -> omniauth-google-oauth2 -> oauth2 -> faraday -> faraday-net_http -> net-http -> uri) is the longest cross-vulnerability chain in the project.",
+          "continuation_to_second_vuln": [
+            {
+              "depth": 4,
+              "name": "faraday-net_http",
+              "version": "3.4.2",
+              "purpose": "Faraday adapter backed by Net::HTTP"
+            },
+            {
+              "depth": 5,
+              "name": "net-http",
+              "version": "0.8.0",
+              "purpose": "Ruby standard library HTTP client"
+            },
+            {
+              "depth": 6,
+              "name": "uri",
+              "version": "1.1.1",
+              "vulnerable": true,
+              "vulnerability": "CVE-2025-61594",
+              "severity": "HIGH",
+              "purpose": "Ruby standard library URI parsing"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "project": {
+    "name": "spring-petclinic",
+    "version": "4.0.0-SNAPSHOT",
+    "framework": "Spring Boot 4.0.1"
+  },
+  "vulnerable_transitive_dependency": {
+    "group": "ch.qos.logback",
+    "artifact": "logback-core",
+    "version": "1.5.22",
+    "purl": "pkg:maven/ch.qos.logback/logback-core@1.5.22?type=jar",
+    "vulnerability": {
+      "id": "CVE-2026-1225",
+      "description": "ACE vulnerability in configuration file processing by QOS.CH logback-core up to and including version 1.5.24. An attacker can instantiate classes already present on the class path by compromising an existing logback configuration file.",
+      "severity": "LOW",
+      "fixed_in_version": "1.5.25",
+      "primary_url": "https://avd.aquasec.com/nvd/cve-2026-1225"
+    }
+  },
+  "dependency_chain": {
+    "description": "logback-core:1.5.22 is a transitive dependency, never declared directly in pom.xml. It is pulled in through logback-classic, which comes from spring-boot-starter-logging, which is included by every spring-boot-starter.",
+    "direct_path": [
+      "org.springframework.samples:spring-petclinic:4.0.0-SNAPSHOT",
+      "org.springframework.boot:spring-boot-starter-*:4.0.1 (any of 10 starters)",
+      "org.springframework.boot:spring-boot-starter:4.0.1",
+      "org.springframework.boot:spring-boot-starter-logging:4.0.1",
+      "ch.qos.logback:logback-classic:1.5.22",
+      "ch.qos.logback:logback-core:1.5.22 (VULNERABLE)"
+    ],
+    "total_upstream_paths": 10,
+    "upstream_starters_reaching_this_dep": [
+      "spring-boot-starter-actuator",
+      "spring-boot-starter-cache",
+      "spring-boot-starter-data-jpa",
+      "spring-boot-starter-thymeleaf",
+      "spring-boot-starter-validation",
+      "spring-boot-starter-webmvc",
+      "spring-boot-starter-jdbc (via data-jpa)",
+      "spring-boot-starter-micrometer-metrics (via actuator)",
+      "spring-boot-starter-jackson (via webmvc)",
+      "spring-boot-starter-tomcat (via webmvc)"
+    ]
+  },
+  "sbom_locations": {
+    "sbom_file": "target/sbom.json",
+    "sbom_format": "CycloneDX",
+    "sbom_spec_version": "1.5",
+    "occurrences": [
+      {
+        "location": "components[4]",
+        "type": "component_entry",
+        "content": {
+          "group": "ch.qos.logback",
+          "name": "logback-core",
+          "version": "1.5.22",
+          "purl": "pkg:maven/ch.qos.logback/logback-core@1.5.22?type=jar",
+          "type": "library",
+          "bom-ref": "pkg:maven/ch.qos.logback/logback-core@1.5.22?type=jar",
+          "scope": "required"
+        }
+      },
+      {
+        "location": "dependencies[5].ref",
+        "type": "dependency_graph_node",
+        "description": "logback-core's own entry in the dependency graph (leaf node, no children)",
+        "content": {
+          "ref": "pkg:maven/ch.qos.logback/logback-core@1.5.22?type=jar",
+          "dependsOn": []
+        }
+      },
+      {
+        "location": "dependencies[4].dependsOn[0]",
+        "type": "dependency_graph_edge",
+        "description": "logback-core listed as a dependency of logback-classic",
+        "parent": "pkg:maven/ch.qos.logback/logback-classic@1.5.22?type=jar",
+        "child": "pkg:maven/ch.qos.logback/logback-core@1.5.22?type=jar"
+      }
+    ]
+  }
+}

@@ -1,0 +1,360 @@
+{
+  "project": {
+    "name": "keycloak",
+    "display_name": "Keycloak",
+    "version": "999.0.0-SNAPSHOT",
+    "ecosystem": "pnpm",
+    "description": "Keycloak SSO - Open Source Identity and Access Management. This is a large multi-module project with both Maven (Java) and pnpm (JavaScript) components. The JS workspace under js/ contains the admin UI, account UI, themes, and shared libraries.",
+    "repository": "https://github.com/keycloak/keycloak",
+    "lockfile": "js/pnpm-lock.yaml",
+    "workspace_file": "js/pnpm-workspace.yaml"
+  },
+  "vulnerable_transitive_dependency": {
+    "name": "@remix-run/router",
+    "version": "1.23.1",
+    "purl": "pkg:npm/%40remix-run/router@1.23.1",
+    "description": "The routing engine used internally by react-router and react-router-dom. It provides the core logic for route matching, navigation, data loading, and redirect handling in React Router v6.",
+    "license": "MIT",
+    "vulnerability": {
+      "id": "CVE-2026-22029",
+      "aliases": ["GHSA-2w69-qvjg-hvjx"],
+      "description": "React Router is a router for React. In @remix-run/router versions prior to 1.23.2 and react-router 7.0.0 through 7.11.0, SPA open navigation redirects originating from loaders or actions in Framework Mode, Data Mode, or the unstable RSC modes can result in unsafe URLs causing unintended JavaScript execution on the client. This is only an issue if redirect paths are created from untrusted content or via an open redirect. This is an XSS via Open Redirect vulnerability.",
+      "severity": "HIGH",
+      "cvss_score": 8.0,
+      "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:H/A:N",
+      "cvss_scores": {
+        "ghsa": { "score": 8.0, "vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:H/A:N" },
+        "nvd": { "score": 6.1, "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N" },
+        "redhat": { "score": 8.0, "vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:H/A:N" }
+      },
+      "cwe_ids": ["CWE-79"],
+      "fixed_in_version": "1.23.2",
+      "affected_versions": "<1.23.2",
+      "published_date": "2026-01-10T03:15:48.87Z",
+      "last_modified_date": "2026-02-10T19:36:31.503Z",
+      "primary_url": "https://nvd.nist.gov/vuln/detail/CVE-2026-22029",
+      "references": [
+        "https://github.com/remix-run/react-router/security/advisories/GHSA-2w69-qvjg-hvjx",
+        "https://access.redhat.com/security/cve/CVE-2026-22029",
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-22029"
+      ],
+      "security_context": "This vulnerability is particularly concerning in Keycloak because it is an identity and access management platform. The admin-ui and account-ui are authentication-facing UIs where XSS via open redirects could be exploited to steal session tokens, bypass authentication flows, or redirect users to phishing pages during login/consent flows."
+    }
+  },
+  "dependency_chain": {
+    "description": "@remix-run/router@1.23.1 is a transitive dependency, never declared directly in any Keycloak package.json. It is the internal routing engine pulled in by react-router-dom@6.30.2 (a direct dependency of both admin-ui and account-ui). react-router-dom depends on react-router@6.30.2, which in turn depends on @remix-run/router@1.23.1. Both react-router-dom and react-router independently declare @remix-run/router as a dependency, but only one copy is resolved. The vulnerability affects two critical Keycloak UI applications that handle admin operations and user account management.",
+    "primary_path": [
+      "keycloak (js workspace root)",
+      "@keycloak/keycloak-admin-ui@999.0.0-SNAPSHOT (apps/admin-ui)",
+      "react-router-dom@6.30.2",
+      "react-router@6.30.2",
+      "@remix-run/router@1.23.1"
+    ],
+    "primary_path_purls": [
+      "pkg:npm/%40keycloak/keycloak-admin-ui@999.0.0-SNAPSHOT",
+      "pkg:npm/react-router-dom@6.30.2",
+      "pkg:npm/react-router@6.30.2",
+      "pkg:npm/%40remix-run/router@1.23.1"
+    ],
+    "depth": 3,
+    "total_upstream_paths": 4,
+    "all_paths": [
+      {
+        "description": "Through admin-ui -> react-router-dom -> react-router -> @remix-run/router",
+        "path": [
+          "@keycloak/keycloak-admin-ui@999.0.0-SNAPSHOT",
+          "react-router-dom@6.30.2",
+          "react-router@6.30.2",
+          "@remix-run/router@1.23.1"
+        ]
+      },
+      {
+        "description": "Through admin-ui -> react-router-dom -> @remix-run/router (direct dep of react-router-dom)",
+        "path": [
+          "@keycloak/keycloak-admin-ui@999.0.0-SNAPSHOT",
+          "react-router-dom@6.30.2",
+          "@remix-run/router@1.23.1"
+        ]
+      },
+      {
+        "description": "Through account-ui -> react-router-dom -> react-router -> @remix-run/router",
+        "path": [
+          "@keycloak/keycloak-account-ui@999.0.0-SNAPSHOT",
+          "react-router-dom@6.30.2",
+          "react-router@6.30.2",
+          "@remix-run/router@1.23.1"
+        ]
+      },
+      {
+        "description": "Through account-ui -> react-router-dom -> @remix-run/router (direct dep of react-router-dom)",
+        "path": [
+          "@keycloak/keycloak-account-ui@999.0.0-SNAPSHOT",
+          "react-router-dom@6.30.2",
+          "@remix-run/router@1.23.1"
+        ]
+      }
+    ],
+    "why_this_is_complex": "This chain is complex for several reasons: (1) @remix-run/router is the internal engine of react-router, so its name gives no hint it is related to react-router-dom; (2) both react-router-dom and react-router independently depend on @remix-run/router, creating a diamond dependency pattern; (3) the vulnerability impacts two separate Keycloak UI apps (admin-ui and account-ui) through the same shared transitive dependency; (4) Keycloak is a Java project with Maven at its root, so scanning only with Maven tools would completely miss this JS-ecosystem vulnerability buried in the js/ workspace."
+  },
+  "sbom_locations": {
+    "sbom_format": "CycloneDX",
+    "sbom_spec_version": "1.5",
+    "sbom_file": "Not pre-generated. Can be produced via: cd js && pnpm dlx @cyclonedx/cyclonedx-npm --output-file bom.json",
+    "lockfile": "js/pnpm-lock.yaml",
+    "note": "No pre-built SBOM exists in the repository. The pnpm-lock.yaml serves as the de facto dependency resolution file. Trivy scans this lockfile directly to identify vulnerabilities.",
+    "expected_occurrences": [
+      {
+        "location": "components[N]",
+        "type": "component_entry",
+        "description": "The CycloneDX component record for @remix-run/router, including purl and version",
+        "data": {
+          "name": "@remix-run/router",
+          "version": "1.23.1",
+          "purl": "pkg:npm/%40remix-run/router@1.23.1",
+          "type": "library",
+          "scope": "required"
+        }
+      },
+      {
+        "location": "dependencies[M]",
+        "type": "dependency_graph_node",
+        "description": "@remix-run/router entry in the dependency graph (leaf node with no runtime dependencies of its own)",
+        "data": {
+          "ref": "pkg:npm/%40remix-run/router@1.23.1",
+          "dependsOn": []
+        }
+      },
+      {
+        "location": "dependencies[K].dependsOn",
+        "type": "dependency_graph_edge",
+        "description": "@remix-run/router listed as a dependency of react-router-dom",
+        "parent": "pkg:npm/react-router-dom@6.30.2",
+        "child": "pkg:npm/%40remix-run/router@1.23.1"
+      },
+      {
+        "location": "dependencies[J].dependsOn",
+        "type": "dependency_graph_edge",
+        "description": "@remix-run/router listed as a dependency of react-router",
+        "parent": "pkg:npm/react-router@6.30.2",
+        "child": "pkg:npm/%40remix-run/router@1.23.1"
+      }
+    ],
+    "lockfile_evidence": {
+      "description": "Key locations in js/pnpm-lock.yaml that prove the transitive dependency chain",
+      "entries": [
+        {
+          "lockfile_section": "importers > apps/admin-ui > dependencies > react-router-dom",
+          "resolved_version": "6.30.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)",
+          "specifier": "^6.30.2"
+        },
+        {
+          "lockfile_section": "importers > apps/account-ui > dependencies > react-router-dom",
+          "resolved_version": "6.30.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)",
+          "specifier": "^6.30.2"
+        },
+        {
+          "lockfile_section": "snapshots > react-router-dom@6.30.2",
+          "dependencies": ["@remix-run/router@1.23.1", "react@18.3.1", "react-dom@18.3.1", "react-router@6.30.2"]
+        },
+        {
+          "lockfile_section": "snapshots > react-router@6.30.2",
+          "dependencies": ["@remix-run/router@1.23.1", "react@18.3.1"]
+        },
+        {
+          "lockfile_section": "packages > @remix-run/router@1.23.1",
+          "resolution_integrity": "sha512-vDbaOzF7yT2Qs4vO6XV1MHcJv+3dgR1sT+l3B8xxOVhUC336prMvqrvsLL/9Dnw2xr6Qhz4J0dmS0llNAbnUmQ==",
+          "engines": "node >= 14.0.0"
+        }
+      ]
+    }
+  },
+  "dfs_tree_context": {
+    "description": "DFS traversal context for the pnpm workspace dependency tree, rooted at the Keycloak JS workspace. The workspace has 6 importers (workspace packages). The primary path follows admin-ui -> react-router-dom -> react-router -> @remix-run/router at depth 3. Each level shows all children of the node at that depth, with the target_child indicating which branch leads toward the vulnerable dependency.",
+    "levels": [
+      {
+        "depth": 0,
+        "node": "keycloak-js-workspace (root)",
+        "description": "The pnpm workspace root defined by js/pnpm-workspace.yaml",
+        "children": [
+          "@keycloak/keycloak-account-ui@999.0.0-SNAPSHOT (apps/account-ui)",
+          "@keycloak/keycloak-admin-ui@999.0.0-SNAPSHOT (apps/admin-ui)",
+          "create-keycloak-theme (apps/create-keycloak-theme)",
+          "keycloak-server (apps/keycloak-server)",
+          "@keycloak/keycloak-admin-client (libs/keycloak-admin-client)",
+          "@keycloak/keycloak-ui-shared (libs/ui-shared)",
+          "themes-vendor (themes-vendor)"
+        ],
+        "children_count": 7,
+        "target_child": "@keycloak/keycloak-admin-ui@999.0.0-SNAPSHOT",
+        "target_child_index": 1,
+        "note": "The workspace root has 7 packages. Two of them (admin-ui and account-ui) depend on react-router-dom. The admin-ui is selected as the primary path since it has more dependencies and is the richer subtree."
+      },
+      {
+        "depth": 1,
+        "node": "@keycloak/keycloak-admin-ui@999.0.0-SNAPSHOT",
+        "node_purl": "pkg:npm/%40keycloak/keycloak-admin-ui@999.0.0-SNAPSHOT",
+        "source_file": "js/apps/admin-ui/package.json",
+        "children": [
+          "@dagrejs/dagre@1.1.8",
+          "@keycloak/keycloak-admin-client (workspace:*)",
+          "@keycloak/keycloak-ui-shared (workspace:*)",
+          "@patternfly/patternfly@5.4.2",
+          "@patternfly/react-core@5.4.14",
+          "@patternfly/react-icons@5.4.2",
+          "@patternfly/react-styles@5.4.1",
+          "@patternfly/react-table@5.4.16",
+          "@uiw/react-textarea-code-editor@3.1.1",
+          "file-saver@2.0.5",
+          "flat@6.0.1",
+          "i18next@25.7.3",
+          "i18next-fetch-backend@7.0.0",
+          "jszip@3.10.1",
+          "keycloak-js@26.2.2",
+          "lodash-es@4.17.23",
+          "p-debounce@5.1.0",
+          "react@18.3.1",
+          "react-dom@18.3.1",
+          "react-hook-form@7.70.0",
+          "react-i18next@16.5.1",
+          "react-router-dom@6.30.2",
+          "reactflow@11.11.4",
+          "use-react-router-breadcrumbs@4.0.1",
+          "yaml@2.8.2"
+        ],
+        "children_count": 25,
+        "target_child": "react-router-dom@6.30.2",
+        "target_child_index": 21,
+        "note": "The Keycloak admin UI has 25 direct production dependencies. react-router-dom provides client-side routing for the single-page admin console. The admin-ui is the primary UI for Keycloak administration, handling realm configuration, user management, client setup, and authentication flow design."
+      },
+      {
+        "depth": 2,
+        "node": "react-router-dom@6.30.2",
+        "node_purl": "pkg:npm/react-router-dom@6.30.2",
+        "children": [
+          "@remix-run/router@1.23.1",
+          "react@18.3.1",
+          "react-dom@18.3.1",
+          "react-router@6.30.2"
+        ],
+        "children_count": 4,
+        "target_child": "react-router@6.30.2",
+        "target_child_index": 3,
+        "note": "react-router-dom has 4 dependencies. It directly depends on @remix-run/router AND on react-router, which also depends on @remix-run/router. This creates a diamond dependency pattern. Following the deeper path through react-router for the DFS traversal."
+      },
+      {
+        "depth": 3,
+        "node": "react-router@6.30.2",
+        "node_purl": "pkg:npm/react-router@6.30.2",
+        "children": [
+          "@remix-run/router@1.23.1",
+          "react@18.3.1"
+        ],
+        "children_count": 2,
+        "target_child": "@remix-run/router@1.23.1",
+        "target_child_index": 0,
+        "note": "react-router is the framework-agnostic router layer. It depends on @remix-run/router for the core routing engine. This is where the final hop to the vulnerable package occurs."
+      },
+      {
+        "depth": 4,
+        "node": "@remix-run/router@1.23.1",
+        "node_purl": "pkg:npm/%40remix-run/router@1.23.1",
+        "children": [],
+        "children_count": 0,
+        "target_child": null,
+        "target_child_index": null,
+        "note": "The VULNERABLE leaf node (CVE-2026-22029). @remix-run/router has no runtime dependencies of its own. It is the core routing engine that handles route matching, data loading, navigation, and redirect processing. The vulnerability is in the redirect handling logic, where unsafe URLs can cause unintended JavaScript execution."
+      }
+    ],
+    "alternate_branch_context": {
+      "description": "The same @remix-run/router@1.23.1 is reachable through an alternate path via account-ui, and also through a shorter path from react-router-dom directly (skipping react-router).",
+      "levels": [
+        {
+          "depth": 1,
+          "node": "@keycloak/keycloak-account-ui@999.0.0-SNAPSHOT",
+          "node_purl": "pkg:npm/%40keycloak/keycloak-account-ui@999.0.0-SNAPSHOT",
+          "source_file": "js/apps/account-ui/package.json",
+          "children_count": 12,
+          "target_child": "react-router-dom@6.30.2",
+          "notable_siblings": [
+            "@keycloak/keycloak-ui-shared (workspace:*)",
+            "@patternfly/react-core@5.4.14",
+            "@patternfly/react-table@5.4.16",
+            "keycloak-js@26.2.2",
+            "react-hook-form@7.70.0",
+            "react-i18next@16.5.1"
+          ],
+          "note": "The account-ui is the user-facing self-service portal where end users manage their own accounts, sessions, and credentials. It has 12 direct production dependencies, fewer than admin-ui, but includes the same react-router-dom dependency creating a parallel path to the vulnerability."
+        }
+      ]
+    },
+    "diamond_dependency_detail": {
+      "description": "react-router-dom@6.30.2 depends on BOTH @remix-run/router@1.23.1 directly AND react-router@6.30.2 which also depends on @remix-run/router@1.23.1. In a DFS traversal, the first visit to @remix-run/router would occur either via the direct edge from react-router-dom or via the react-router intermediate, depending on the ordering of children. pnpm deduplicates to a single copy.",
+      "edges_to_vulnerable_package": [
+        { "from": "react-router-dom@6.30.2", "to": "@remix-run/router@1.23.1", "type": "direct" },
+        { "from": "react-router@6.30.2", "to": "@remix-run/router@1.23.1", "type": "direct" }
+      ]
+    }
+  },
+  "other_notable_vulnerable_transitive_deps": [
+    {
+      "name": "bootstrap",
+      "version": "3.4.1",
+      "purl": "pkg:npm/bootstrap@3.4.1",
+      "vulnerability_id": "CVE-2024-6485",
+      "severity": "MEDIUM",
+      "chain": "keycloak -> themes-vendor -> patternfly@3.59.5 -> bootstrap@3.4.1",
+      "depth": 2,
+      "note": "Bootstrap 3.4.1 is pulled in via the legacy PatternFly v3 CSS framework used for older Keycloak themes. The patternfly@3.59.5 package is deprecated and pins bootstrap 3.x and jquery 3.4.x."
+    },
+    {
+      "name": "bootstrap",
+      "version": "3.4.1",
+      "purl": "pkg:npm/bootstrap@3.4.1",
+      "vulnerability_id": "CVE-2025-1647",
+      "severity": "MEDIUM",
+      "chain": "keycloak -> themes-vendor -> patternfly@3.59.5 -> bootstrap@3.4.1",
+      "depth": 2,
+      "note": "Second vulnerability in the same bootstrap@3.4.1 transitive dependency."
+    },
+    {
+      "name": "jquery",
+      "version": "3.4.1",
+      "purl": "pkg:npm/jquery@3.4.1",
+      "vulnerability_id": "CVE-2020-11022",
+      "severity": "MEDIUM",
+      "chain": "keycloak -> themes-vendor -> patternfly@3.59.5 -> jquery@3.4.1",
+      "depth": 2,
+      "note": "jQuery 3.4.1 XSS vulnerability in htmlPrefilter. Also pulled in via legacy PatternFly v3."
+    },
+    {
+      "name": "jquery",
+      "version": "3.4.1",
+      "purl": "pkg:npm/jquery@3.4.1",
+      "vulnerability_id": "CVE-2020-11023",
+      "severity": "MEDIUM",
+      "chain": "keycloak -> themes-vendor -> patternfly@3.59.5 -> jquery@3.4.1",
+      "depth": 2,
+      "note": "Second jQuery XSS vulnerability (in HTML sanitization) in the same jquery@3.4.1."
+    },
+    {
+      "name": "lodash",
+      "version": "4.17.21",
+      "purl": "pkg:npm/lodash@4.17.21",
+      "vulnerability_id": "CVE-2025-13465",
+      "severity": "MEDIUM",
+      "chain": "keycloak -> admin-ui -> @patternfly/react-table@5.4.16 -> lodash@4.17.21",
+      "depth": 2,
+      "note": "lodash@4.17.21 is pulled in transitively by @patternfly/react-table and also by @microsoft/api-extractor (dev tooling). It is not declared directly in any Keycloak package.json."
+    },
+    {
+      "name": "mdast-util-to-hast",
+      "version": "13.2.0",
+      "purl": "pkg:npm/mdast-util-to-hast@13.2.0",
+      "vulnerability_id": "CVE-2025-66400",
+      "severity": "MEDIUM",
+      "chain": "keycloak -> (via hast-util-to-html or markdown processing chain) -> mdast-util-to-hast@13.2.0",
+      "depth": 3,
+      "note": "Markdown AST to HAST conversion utility, likely pulled in through documentation or markdown rendering tooling."
+    }
+  ]
+}

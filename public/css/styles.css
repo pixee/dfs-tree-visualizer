@@ -1,0 +1,294 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f8fafc;
+  white-space: nowrap;
+}
+
+select {
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+}
+
+select:hover {
+  border-color: #64748b;
+}
+
+select:focus {
+  border-color: #fbbf24;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.root { background: #4ade80; }
+.dot.direct { background: #60a5fa; }
+.dot.transitive { background: #9ca3af; }
+.dot.vulnerable { background: #ef4444; }
+
+.line.gold {
+  width: 20px;
+  height: 3px;
+  background: #fbbf24;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+aside#sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: #1e293b;
+  border-right: 1px solid #334155;
+  padding: 16px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar-section {
+  margin-bottom: 16px;
+}
+
+.sidebar-section h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.sidebar-section p, .sidebar-section li {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #cbd5e1;
+}
+
+.vuln-id {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  color: #ef4444 !important;
+  font-weight: 600;
+}
+
+.severity-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.severity-CRITICAL { background: #7f1d1d; color: #fca5a5; }
+.severity-HIGH { background: #78350f; color: #fde68a; }
+.severity-MEDIUM { background: #713f12; color: #fde68a; }
+.severity-LOW { background: #1e3a5f; color: #93c5fd; }
+
+.desc-text {
+  font-size: 13px !important;
+  color: #94a3b8 !important;
+}
+
+#sb-additional {
+  list-style: none;
+  padding: 0;
+}
+
+#sb-additional li {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: #f87171;
+  margin-bottom: 2px;
+}
+
+#canvas-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#canvas-container svg {
+  width: 600px;
+  height: 600px;
+  border: 1px solid #ffffff;
+  display: block;
+}
+
+/* D3 tree styles */
+.link {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  opacity: 0.4;
+}
+
+.node circle {
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+.node.root circle { fill: #4ade80; stroke: #22c55e; }
+.node.direct circle { fill: #60a5fa; stroke: #3b82f6; }
+.node.transitive circle { fill: #9ca3af; stroke: #6b7280; }
+.node.vulnerable circle { fill: #ef4444; stroke: #dc2626; }
+.node-label {
+  font-size: 11px;
+  fill: #cbd5e1;
+  pointer-events: none;
+}
+
+.cve-badge {
+  font-size: 10px;
+  font-weight: 700;
+  fill: #fca5a5;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px #ef4444); }
+  50% { filter: drop-shadow(0 0 12px #ef4444); }
+}
+
+.node.vulnerable circle {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* DFS traversal dot */
+.traversal-dot {
+  fill: #fbbf24;
+  filter: drop-shadow(0 0 6px #fbbf24);
+  pointer-events: none;
+}
+
+/* Trail: visited link (bright, on active path) */
+.link.trail-visited {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  opacity: 0.8;
+}
+
+/* Trail: backtracked link (dimmed, already retreated) */
+.link.trail-backtracked {
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  opacity: 0.25;
+}
+
+/* Active node glow during DFS arrive */
+.node.dfs-active circle {
+  filter: drop-shadow(0 0 8px #fbbf24);
+}
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  display: none;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #e2e8f0;
+  max-width: 320px;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.tooltip .tt-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.tooltip .tt-version {
+  color: #94a3b8;
+  font-family: monospace;
+  margin-bottom: 4px;
+}
+
+.tooltip .tt-type {
+  color: #64748b;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.tooltip .tt-cve {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.tooltip .tt-severity {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.tooltip .tt-desc {
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.3;
+}
